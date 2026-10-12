@@ -1,0 +1,4 @@
+/* main only takes focus from the skip link. A ring around the whole page would just be noise. */
+.main:focus {
+  outline: none;
+}

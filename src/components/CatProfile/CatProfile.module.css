@@ -1,0 +1,117 @@
+/*
+ * Shared structure, two characters:
+ * - Olivka: Ticked ground, light text, a tall photo on the left, text at the top.
+ * - Simba: Golden ground, dark text, a larger square photo on the right that
+ *   breaks out into Olivka's band, text sitting lower.
+ */
+
+.profile {
+  /* How far Simba's photo reaches up into Olivka's section. */
+  --overlap: var(--space-3xl);
+
+  padding: var(--space-2xl) var(--gutter);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.profile[data-cat='olivka'] {
+  --color-bg: var(--color-ticked);
+  --color-text: var(--color-chin);
+  --color-link: var(--color-chin);
+  --color-focus: var(--color-chin);
+
+  /* Leaves room for Simba's photo so it never covers Olivka's text. */
+  padding-bottom: calc(var(--space-2xl) + var(--overlap));
+}
+
+.profile[data-cat='simba'] {
+  --color-bg: var(--color-golden);
+  --color-text: var(--color-stripe);
+  /* Olive on Golden is only 4.03:1, so links here use Stripe plus the underline. */
+  --color-link: var(--color-stripe);
+  --color-focus: var(--color-stripe);
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-l);
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
+
+.photo {
+  /* Positioned, so it paints above Olivka's section where the two overlap. */
+  position: relative;
+  /* Photos are the only things allowed to touch the viewport edge. */
+  margin-inline: calc(-1 * var(--gutter));
+  aspect-ratio: 4 / 5;
+  background-color: color-mix(in oklab, var(--color-bg), var(--color-stripe) 30%);
+}
+
+.profile[data-cat='simba'] .photo {
+  aspect-ratio: 1;
+  margin-top: calc(-1 * (var(--space-2xl) + var(--overlap)));
+}
+
+.text > * + * {
+  margin-top: var(--space-s);
+}
+
+.name {
+  font-size: var(--step-5);
+}
+
+.meta {
+  font-weight: 600;
+}
+
+.text > .meta {
+  margin-top: var(--space-2xs);
+}
+
+.lists {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: var(--space-m);
+}
+
+.text > .lists {
+  margin-top: var(--space-l);
+}
+
+.lists h3 {
+  font-size: var(--step-1);
+}
+
+.lists ul {
+  margin-top: var(--space-2xs);
+  padding-left: 1.1em;
+}
+
+@media (min-width: 48rem) {
+  .photo {
+    margin-inline: 0;
+  }
+
+  .profile[data-cat='olivka'] .inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .profile[data-cat='simba'] .inner {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    column-gap: var(--space-xl);
+    align-items: end;
+  }
+
+  .profile[data-cat='simba'] .photo {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .profile[data-cat='simba'] .text {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}

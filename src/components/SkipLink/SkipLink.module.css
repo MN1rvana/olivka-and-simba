@@ -1,0 +1,22 @@
+.skipLink {
+  /* It always appears over the dark hero, where the default Olive ring is only 2.2:1. */
+  --color-focus: var(--color-eye-olivka);
+
+  position: absolute;
+  top: var(--space-s);
+  left: var(--gutter);
+  z-index: 1;
+  padding: var(--space-2xs) var(--space-s);
+  background-color: var(--color-chin);
+  color: var(--color-stripe);
+  font-weight: 600;
+}
+
+/* Hidden from sight but not from screen readers until it gets focus. */
+.skipLink:not(:focus) {
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}

@@ -1,0 +1,9 @@
+.footer {
+  padding: var(--space-xl) var(--gutter);
+  font-size: var(--step--1);
+}
+
+.footer > p {
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
