@@ -1,4 +1,4 @@
-import { useId, useImperativeHandle, type Ref } from 'react';
+import { useId, useImperativeHandle, useRef, type Ref } from 'react';
 import { useAnimate, useReducedMotion } from 'motion/react';
 import type { CatId } from '../../data/cats.ts';
 import styles from './CatEyes.module.css';
@@ -42,6 +42,7 @@ interface CatEyesProps {
 export function CatEyes({ cat, ref }: CatEyesProps) {
   const id = useId();
   const [scope, animate] = useAnimate<SVGSVGElement>();
+  const isBlinking = useRef(false);
   const reduceMotion = useReducedMotion();
   const shape = shapes[cat];
   const top = EYE_CY - shape.ry;
@@ -61,27 +62,35 @@ export function CatEyes({ cat, ref }: CatEyesProps) {
     ref,
     () => ({
       blink(delay) {
-        if (reduceMotion) {
-          // No movement: the closed eye fades in, holds, and fades out.
-          void (async () => {
-            await animate(BLINK_LID, { y: closed, opacity: 0 }, { duration: 0, delay });
-            await animate(
-              BLINK_LID,
-              { opacity: [0, 1, 1, 0] },
-              { duration: 1.2, times: [0, 0.2, 0.8, 1] },
-            );
-            await animate(BLINK_LID, { y: 0, opacity: 1 }, { duration: 0 });
-          })();
-          return;
-        }
+        // One blink at a time. A second press mid-blink would restart the
+        // keyframes from "open" and the lids would jump.
+        if (isBlinking.current) return;
+        isBlinking.current = true;
 
-        // A slow blink: lids drift down, rest closed for a moment, then lift
-        // a little slower than they fell.
-        void animate(
-          BLINK_LID,
-          { y: [0, closed, closed, 0] },
-          { duration: 1.8, times: [0, 0.35, 0.6, 1], ease: 'easeInOut', delay },
-        );
+        void (async () => {
+          try {
+            if (reduceMotion) {
+              // No movement: the closed eye fades in, holds, and fades out.
+              await animate(BLINK_LID, { y: closed, opacity: 0 }, { duration: 0, delay });
+              await animate(
+                BLINK_LID,
+                { opacity: [0, 1, 1, 0] },
+                { duration: 1.2, times: [0, 0.2, 0.8, 1] },
+              );
+              await animate(BLINK_LID, { y: 0, opacity: 1 }, { duration: 0 });
+            } else {
+              // A slow blink: lids drift down, rest closed for a moment, then
+              // lift a little slower than they fell.
+              await animate(
+                BLINK_LID,
+                { y: [0, closed, closed, 0] },
+                { duration: 1.8, times: [0, 0.35, 0.6, 1], ease: 'easeInOut', delay },
+              );
+            }
+          } finally {
+            isBlinking.current = false;
+          }
+        })();
       },
     }),
     [animate, closed, reduceMotion],
