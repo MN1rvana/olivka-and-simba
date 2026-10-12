@@ -26,6 +26,8 @@
  * never cropped), with reading order still left to right.
  */
 .grid {
+  /* popLayout takes leaving photos out of the flow with position: absolute, relative to this. */
+  position: relative;
   display: grid;
   gap: var(--space-3xs);
   padding: 0;

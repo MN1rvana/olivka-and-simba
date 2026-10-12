@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { photos } from '../../data/photos.ts';
 import { countByFilter, filterPhotos } from '../../lib/gallery.ts';
 import { usePhotoFilter } from '../../hooks/usePhotoFilter.ts';
@@ -47,36 +48,49 @@ export function Gallery() {
       </p>
 
       <ul className={styles.grid} role="list">
-        {visible.map((photo) => {
-          const ratio = photo.width / photo.height;
+        {/*
+         * When the filter changes, photos that stay slide to their new spots
+         * (layout), photos that leave fade out and are taken out of the flow
+         * at once (popLayout), and new ones fade in. initial={false}: nothing
+         * animates on first load.
+         */}
+        <AnimatePresence mode="popLayout" initial={false}>
+          {visible.map((photo) => {
+            const ratio = photo.width / photo.height;
 
-          return (
-            <li
-              key={photo.id}
-              className={styles.item}
-              // Grow and basis both proportional to the aspect ratio, so every
-              // photo in a row ends up the same height.
-              style={{ flexGrow: ratio, flexBasis: `calc(${ratio} * var(--row-height))` }}
-            >
-              <button
-                type="button"
-                className={styles.thumb}
-                onClick={() => open(photo.id)}
-                ref={(node) => {
-                  if (node) thumbnails.current.set(photo.id, node);
-                  return () => {
-                    thumbnails.current.delete(photo.id);
-                  };
-                }}
+            return (
+              <motion.li
+                key={photo.id}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ type: 'spring', duration: 0.45, bounce: 0.1 }}
+                className={styles.item}
+                // Grow and basis both proportional to the aspect ratio, so every
+                // photo in a row ends up the same height.
+                style={{ flexGrow: ratio, flexBasis: `calc(${ratio} * var(--row-height))` }}
               >
-                <Picture
-                  photo={photo}
-                  sizes="(min-width: 60rem) 33vw, (min-width: 30rem) 50vw, 100vw"
-                />
-              </button>
-            </li>
-          );
-        })}
+                <button
+                  type="button"
+                  className={styles.thumb}
+                  onClick={() => open(photo.id)}
+                  ref={(node) => {
+                    if (node) thumbnails.current.set(photo.id, node);
+                    return () => {
+                      thumbnails.current.delete(photo.id);
+                    };
+                  }}
+                >
+                  <Picture
+                    photo={photo}
+                    sizes="(min-width: 60rem) 33vw, (min-width: 30rem) 50vw, 100vw"
+                  />
+                </button>
+              </motion.li>
+            );
+          })}
+        </AnimatePresence>
       </ul>
 
       <Lightbox
