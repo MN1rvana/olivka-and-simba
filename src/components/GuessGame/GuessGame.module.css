@@ -1,0 +1,106 @@
+.game {
+  padding: var(--space-2xl) var(--gutter) var(--space-3xl);
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-l);
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
+
+/*
+ * A fixed-height frame, so the buttons below don't jump when the next
+ * photo has a different shape. The photo is shown whole inside it, never cropped.
+ */
+.frame {
+  display: grid;
+  /* A definite row (not the implicit auto one), so height: 100% on the
+   * picture resolves against the frame instead of the photo's own size. */
+  grid-template-rows: minmax(0, 1fr);
+  place-items: center;
+  height: min(70vw, 28rem);
+}
+
+.picture {
+  height: 100%;
+}
+
+.frame .picture img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+}
+
+.play > * + * {
+  margin-top: var(--space-s);
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+}
+
+.choice,
+.next {
+  min-height: 3.25rem;
+  padding: var(--space-2xs) var(--space-l);
+  border: 0;
+  cursor: pointer;
+}
+
+/* Each answer wears its cat's colors from the profile sections. */
+.choice {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+}
+
+.choice[data-cat='olivka'] {
+  background-color: var(--color-ticked);
+  color: var(--color-chin);
+}
+
+.choice[data-cat='simba'] {
+  background-color: var(--color-golden);
+  color: var(--color-stripe);
+}
+
+.next {
+  border: 2px solid var(--color-stripe);
+  background: none;
+  font-weight: 600;
+}
+
+.next:hover {
+  background-color: var(--color-stripe);
+  color: var(--color-chin);
+}
+
+/* Room for one line, so the score below doesn't move when the result appears. */
+.result {
+  min-height: calc(var(--leading-text) * 1em);
+  font-size: var(--step-1);
+  font-weight: 600;
+}
+
+.score {
+  font-variant-numeric: tabular-nums;
+}
+
+.number {
+  display: inline-block;
+  min-width: 1.5ch;
+}
+
+@media (min-width: 48rem) {
+  .inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--space-2xl);
+  }
+
+  .frame {
+    height: 28rem;
+  }
+}

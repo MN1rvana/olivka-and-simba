@@ -13,6 +13,8 @@ interface PictureProps {
   className?: string | undefined;
   /** Shared-layout id. Two Pictures with the same id animate from one position to the other. */
   layoutId?: string | undefined;
+  /** Replaces the manifest's alt text, e.g. when the real one would give away a game answer. */
+  alt?: string | undefined;
 }
 
 /**
@@ -21,7 +23,14 @@ interface PictureProps {
  * loads. Until then the tiny placeholder shows through, and the real image
  * fades in over it.
  */
-export function Picture({ photo, sizes, priority = false, className, layoutId }: PictureProps) {
+export function Picture({
+  photo,
+  sizes,
+  priority = false,
+  className,
+  layoutId,
+  alt = photo.alt,
+}: PictureProps) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -39,7 +48,7 @@ export function Picture({ photo, sizes, priority = false, className, layoutId }:
         src={photoUrl(photo, largestWidth(photo), 'webp')}
         width={photo.width}
         height={photo.height}
-        alt={photo.alt}
+        alt={alt}
         loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : 'auto'}
         decoding="async"

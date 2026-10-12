@@ -1,6 +1,7 @@
 import { MotionConfig } from 'motion/react';
 import { CatProfile } from './components/CatProfile/CatProfile.tsx';
 import { Gallery } from './components/Gallery/Gallery.tsx';
+import { GuessGame } from './components/GuessGame/GuessGame.tsx';
 import { Hero } from './components/Hero/Hero.tsx';
 import { SiteFooter } from './components/SiteFooter/SiteFooter.tsx';
 import { SkipLink } from './components/SkipLink/SkipLink.tsx';
@@ -22,6 +23,7 @@ export function App() {
           <CatProfile key={cat.id} cat={cat} priority={index === 0} />
         ))}
         <Gallery />
+        <GuessGame />
       </main>
       <SiteFooter />
     </MotionConfig>

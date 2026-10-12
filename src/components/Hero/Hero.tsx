@@ -36,6 +36,9 @@ export function Hero() {
           <li>
             <a href="#photos">Photos</a>
           </li>
+          <li>
+            <a href="#game">Game</a>
+          </li>
         </ul>
       </nav>
 
