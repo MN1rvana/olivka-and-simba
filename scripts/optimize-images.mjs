@@ -1,7 +1,8 @@
 /**
  * Turns the originals in raw-photos/ into web-ready images and a manifest.
  *
- *   npm run photos
+ *   npm run photos              process every original in raw-photos/
+ *   npm run photos -- --prune   also remove photos whose original is gone
  *
  * Input:  raw-photos/olivka-*.jpg, simba-*.jpg, both-*.jpg (gitignored)
  * Output: public/photos/<id>-<width>.{avif,webp} and src/data/photos.json
@@ -16,8 +17,13 @@
  *   script never asks. scripts/check-photo-metadata.mjs proves it.
  * - Alt text and captions already in photos.json are kept, so running the
  *   script again never overwrites what Maryna wrote.
+ * - A photo whose original isn't in raw-photos/ (a new laptop, a tidied
+ *   folder) stays in the manifest and on disk. Only --prune removes it.
+ * - Every run re-encodes everything. sharp's output is the same for the
+ *   same input, so unchanged photos don't show up in git, and there's no
+ *   cache to go stale.
  */
-import { mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -54,84 +60,70 @@ function widthsFor(originalWidth) {
 
 const outputName = (id, width, format) => `${id}-${width}.${format}`;
 
-async function isNewerThan(file, time) {
-  try {
-    return (await stat(file)).mtimeMs >= time;
-  } catch {
-    return false;
-  }
-}
-
 async function processPhoto({ file, id, cat }, previous) {
   const input = path.join(INPUT_DIR, file);
-  const inputTime = (await stat(input)).mtimeMs;
 
   // autoOrient holds the dimensions after the EXIF orientation is applied.
   const { autoOrient } = await sharp(input).metadata();
   const widths = widthsFor(autoOrient.width);
   const largest = widths[widths.length - 1];
   const height = Math.round((autoOrient.height * largest) / autoOrient.width);
-  const outputs = widths.flatMap((w) =>
-    Object.keys(FORMATS).map((format) => path.join(OUTPUT_DIR, outputName(id, w, format))),
+  const image = sharp(input).rotate();
+
+  await Promise.all(
+    widths.flatMap((w) =>
+      Object.entries(FORMATS).map(([format, options]) =>
+        image
+          .clone()
+          .resize({ width: w })
+          .toFormat(format, options)
+          .toFile(path.join(OUTPUT_DIR, outputName(id, w, format))),
+      ),
+    ),
   );
 
-  const upToDate =
-    previous?.placeholder &&
-    previous.width === largest &&
-    (await Promise.all(outputs.map((out) => isNewerThan(out, inputTime)))).every(Boolean);
+  // A 16px-wide copy, inlined as base64. Shown blurred while the real image loads.
+  const tiny = await image.clone().resize({ width: 16 }).webp({ quality: 40 }).toBuffer();
 
-  let placeholder = previous?.placeholder;
-
-  if (upToDate) {
-    console.log(`  ${id}: up to date`);
-  } else {
-    const image = sharp(input).rotate();
-
-    await Promise.all(
-      widths.flatMap((w) =>
-        Object.entries(FORMATS).map(([format, options]) =>
-          image
-            .clone()
-            .resize({ width: w })
-            .toFormat(format, options)
-            .toFile(path.join(OUTPUT_DIR, outputName(id, w, format))),
-        ),
-      ),
-    );
-
-    // A 16px-wide copy, inlined as base64. Shown blurred while the real image loads.
-    const tiny = await image.clone().resize({ width: 16 }).webp({ quality: 40 }).toBuffer();
-    placeholder = `data:image/webp;base64,${tiny.toString('base64')}`;
-
-    console.log(`  ${id}: ${autoOrient.width}×${autoOrient.height} → ${widths.join(', ')}px`);
-  }
+  console.log(`  ${id}: ${autoOrient.width}×${autoOrient.height} → ${widths.join(', ')}px`);
 
   return {
-    entry: {
-      id,
-      cat,
-      width: largest,
-      height,
-      widths,
-      alt: previous?.alt ?? ALT_TODO,
-      ...(previous?.caption ? { caption: previous.caption } : {}),
-      placeholder,
-    },
-    outputs,
+    id,
+    cat,
+    width: largest,
+    height,
+    widths,
+    alt: previous?.alt ?? ALT_TODO,
+    ...(previous?.caption ? { caption: previous.caption } : {}),
+    placeholder: `data:image/webp;base64,${tiny.toString('base64')}`,
   };
 }
 
+/** The file names an entry's widths and formats correspond to. */
+const outputsOf = (entry) =>
+  entry.widths.flatMap((w) =>
+    Object.keys(FORMATS).map((format) => outputName(entry.id, w, format)),
+  );
+
+async function readOriginals() {
+  try {
+    return (await readdir(INPUT_DIR)).sort();
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
 async function main() {
+  const prune = process.argv.includes('--prune');
   await mkdir(OUTPUT_DIR, { recursive: true });
 
   const previous = await readManifest();
-  const files = (await readdir(INPUT_DIR)).sort();
   const photos = [];
-  const keep = new Set();
 
   console.log(`Optimizing photos from raw-photos/`);
 
-  for (const file of files) {
+  for (const file of await readOriginals()) {
     if (file.startsWith('.')) continue;
 
     const match = FILENAME.exec(file);
@@ -143,12 +135,26 @@ async function main() {
 
     const cat = match[1].toLowerCase();
     const id = `${cat}-${match[2].toLowerCase()}`;
-    const { entry, outputs } = await processPhoto({ file, id, cat }, previous.get(id));
-    photos.push(entry);
-    outputs.forEach((out) => keep.add(path.basename(out)));
+    photos.push(await processPhoto({ file, id, cat }, previous.get(id)));
   }
 
-  // Remove output files whose original was deleted or renamed.
+  // Photos already in the manifest whose original isn't here right now.
+  const processed = new Set(photos.map((photo) => photo.id));
+  for (const [id, entry] of previous) {
+    if (processed.has(id)) continue;
+
+    if (prune) {
+      console.log(`  removed ${id}: its original is gone (--prune)`);
+    } else {
+      photos.push(entry);
+      console.warn(
+        `  kept ${id}: its original isn't in raw-photos/ (npm run photos -- --prune removes it)`,
+      );
+    }
+  }
+
+  // Delete output files that no manifest entry points to.
+  const keep = new Set(photos.flatMap(outputsOf));
   for (const file of await readdir(OUTPUT_DIR)) {
     if (!keep.has(file)) {
       await rm(path.join(OUTPUT_DIR, file));
