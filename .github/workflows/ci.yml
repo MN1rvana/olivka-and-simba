@@ -6,10 +6,13 @@ on:
   # Lets me re-run checks and redeploy from the Actions tab without a commit.
   workflow_dispatch:
 
-# A newer push to the same branch makes an older run pointless.
+# A newer push to the same branch makes an older run pointless, except on
+# main: cancelling a main run would also cancel its deploy halfway through.
+# The deploy job's own concurrency group can't prevent that, because
+# cancelling a run cancels all of its jobs.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   check:
