@@ -1,0 +1,32 @@
+.eyes {
+  width: 100%;
+  height: auto;
+}
+
+.eyes[data-cat='olivka'] {
+  --iris: var(--color-eye-olivka);
+}
+
+.eyes[data-cat='simba'] {
+  --iris: var(--color-eye-simba);
+}
+
+.iris {
+  fill: var(--iris);
+  /* A darker rim, mixed from the iris color itself, so the eye doesn't look flat. */
+  stroke: color-mix(in oklab, var(--iris), var(--color-stripe) 45%);
+  stroke-width: 6;
+}
+
+.pupil,
+.lid {
+  fill: var(--color-stripe);
+}
+
+.glint {
+  fill: var(--color-chin);
+}
+
+.nose {
+  fill: var(--color-nose);
+}

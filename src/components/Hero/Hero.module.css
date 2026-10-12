@@ -1,0 +1,89 @@
+/*
+ * The one loud part of the page: two pairs of eyes in the dark.
+ * The roles are redefined here, so links and the focus ring stay readable on Stripe.
+ */
+.hero {
+  --color-bg: var(--color-stripe);
+  --color-text: var(--color-golden);
+  --color-link: var(--color-chin);
+  --color-focus: var(--color-eye-olivka);
+
+  padding: var(--space-m) var(--gutter) var(--space-2xl);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.hero > * {
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
+
+.nav ul {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-m);
+  padding: 0;
+  list-style: none;
+  font-weight: 600;
+}
+
+.nav a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+/*
+ * Three columns: Olivka, the "&", Simba. The eyes sit in row 1 and the
+ * title's spans sit in row 2. The title uses subgrid, so each name lines
+ * up under the right pair of eyes at every width.
+ */
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  column-gap: var(--space-s);
+  row-gap: var(--space-s);
+  margin-top: var(--space-2xl);
+}
+
+.eyes {
+  grid-row: 1;
+  justify-self: center;
+  align-self: end;
+  width: min(100%, 22rem);
+}
+
+.eyes[data-cat='olivka'] {
+  grid-column: 1;
+}
+
+.eyes[data-cat='simba'] {
+  grid-column: 3;
+}
+
+.title {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  align-items: baseline;
+  text-align: center;
+  /* Bigger than --step-6 on wide screens, and tied to the viewport on narrow
+   * ones, so each name always fits its column. */
+  font-size: clamp(2.25rem, 9vw, 4.75rem);
+}
+
+.amp {
+  color: var(--color-chin);
+}
+
+.intro {
+  margin-top: var(--space-l);
+  font-size: var(--step-1);
+  color: var(--color-chin);
+  text-align: center;
+  text-wrap: balance;
+}
