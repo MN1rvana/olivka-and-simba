@@ -1,9 +1,24 @@
+import { useRef, useState } from 'react';
+import { motion } from 'motion/react';
 import { cats } from '../../data/cats.ts';
-import { CatEyes } from '../CatEyes/CatEyes.tsx';
+import { CatEyes, type CatEyesHandle } from '../CatEyes/CatEyes.tsx';
 import styles from './Hero.module.css';
 
+// Seconds before each cat blinks back: Simba straight away, Olivka a beat
+// later.
+const BLINK_DELAY = { simba: 0.2, olivka: 1 } as const;
+
 export function Hero() {
+  const olivkaEyes = useRef<CatEyesHandle>(null);
+  const simbaEyes = useRef<CatEyesHandle>(null);
+  const [hasBlinked, setHasBlinked] = useState(false);
   const [olivka, simba] = cats;
+
+  function blinkAtThem() {
+    simbaEyes.current?.blink(BLINK_DELAY.simba);
+    olivkaEyes.current?.blink(BLINK_DELAY.olivka);
+    setHasBlinked(true);
+  }
 
   if (!olivka || !simba) {
     throw new Error('Hero expects exactly two cats in cats.ts');
@@ -31,10 +46,10 @@ export function Hero() {
        */}
       <div className={styles.stage}>
         <div className={styles.eyes} data-cat={olivka.id}>
-          <CatEyes cat={olivka.id} />
+          <CatEyes ref={olivkaEyes} cat={olivka.id} />
         </div>
         <div className={styles.eyes} data-cat={simba.id}>
-          <CatEyes cat={simba.id} />
+          <CatEyes ref={simbaEyes} cat={simba.id} />
         </div>
 
         <h1 className={styles.title}>
@@ -44,6 +59,21 @@ export function Hero() {
 
       {/* From the @murmuringcats Instagram bio. */}
       <p className={styles.intro}>Professional snugglers. Maximum affection, minimal boundaries.</p>
+
+      {/* The signature moment. It only ever plays when someone asks for it. */}
+      <div className={styles.blink}>
+        <motion.button
+          type="button"
+          className={styles.blinkButton}
+          onClick={blinkAtThem}
+          whileTap={{ scale: 0.96 }}
+        >
+          Blink slowly at them
+        </motion.button>
+        <p className={styles.blinkNote} role="status">
+          {hasBlinked && 'They blinked back. To a cat, a slow blink means “I trust you.”'}
+        </p>
+      </div>
     </header>
   );
 }

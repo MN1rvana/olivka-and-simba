@@ -87,3 +87,33 @@
   text-align: center;
   text-wrap: balance;
 }
+
+.blink {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-l);
+}
+
+.blinkButton {
+  min-height: 2.75rem;
+  padding: var(--space-2xs) var(--space-m);
+  border: 2px solid var(--color-golden);
+  background: none;
+  color: var(--color-golden);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.blinkButton:hover {
+  background-color: var(--color-golden);
+  color: var(--color-stripe);
+}
+
+/* Reserves two lines (enough at 360px), so the page doesn't jump when the note appears. */
+.blinkNote {
+  min-height: calc(2 * var(--leading-text) * 1em);
+  font-size: var(--step--1);
+  color: var(--color-chin);
+  text-align: center;
+}

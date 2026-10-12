@@ -23,6 +23,13 @@
   fill: var(--color-stripe);
 }
 
+.lash {
+  fill: none;
+  stroke: color-mix(in oklab, var(--iris), var(--color-stripe) 35%);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
 .glint {
   fill: var(--color-chin);
 }

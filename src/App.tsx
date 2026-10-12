@@ -1,3 +1,4 @@
+import { MotionConfig } from 'motion/react';
 import { CatProfile } from './components/CatProfile/CatProfile.tsx';
 import { Gallery } from './components/Gallery/Gallery.tsx';
 import { Hero } from './components/Hero/Hero.tsx';
@@ -10,7 +11,9 @@ const MAIN_ID = 'main';
 
 export function App() {
   return (
-    <>
+    // reducedMotion="user": when the OS asks for reduced motion, motion skips
+    // transform and layout animations everywhere and keeps opacity fades.
+    <MotionConfig reducedMotion="user">
       <SkipLink targetId={MAIN_ID} />
       <Hero />
       {/* tabIndex -1 lets the skip link move focus here, not just scroll. */}
@@ -21,6 +24,6 @@ export function App() {
         <Gallery />
       </main>
       <SiteFooter />
-    </>
+    </MotionConfig>
   );
 }
