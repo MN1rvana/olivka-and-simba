@@ -1,0 +1,65 @@
+/* Base typography and global states. Everything here reads from tokens.css. */
+
+html {
+  color-scheme: light;
+  background-color: var(--color-bg);
+}
+
+body {
+  font-family: var(--font-text);
+  font-size: var(--step-0);
+  line-height: var(--leading-text);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  /* Caprasimo has a single weight. Without this, browsers would fake a bold. */
+  font-weight: 400;
+  line-height: var(--leading-display);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-6);
+}
+
+h2 {
+  font-size: var(--step-3);
+}
+
+h3 {
+  font-size: var(--step-2);
+}
+
+p {
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-thickness: 0.16em;
+}
+
+/*
+ * One focus style for the whole site. Sections with a dark ground override
+ * --color-focus, so the ring always contrasts with what's behind it.
+ */
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+::selection {
+  background-color: var(--color-golden);
+  color: var(--color-stripe);
+}

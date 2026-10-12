@@ -1,0 +1,64 @@
+/*
+ * Design tokens. docs/design.md says where each color was sampled from.
+ *
+ * Two layers:
+ * 1. Palette: raw colors, named after the part of the cat they came from.
+ * 2. Roles: what a color is for. Components only use roles, so a section
+ *    can change its look by overriding roles, e.g. Olivka's section sets
+ *    --color-bg to Ticked and --color-text to Chin.
+ */
+
+:root {
+  /* Palette */
+  --color-stripe: #241d16; /* darkest tabby stripes on Olivka's forehead */
+  --color-chin: #f4f4f1; /* Olivka's chin (#c2c3bd), lightened */
+  --color-olive: #475647; /* median of Olivka's irises */
+  --color-ticked: #6b5c4d; /* Olivka's ticked coat */
+  --color-golden: #ceb6a1; /* lightest fifth of Simba's face fur */
+  --color-nose: #9c6669; /* Simba's nose leather; decoration only, never text */
+  --color-eye-olivka: #a9b98f; /* Olivka's iris hue, lighter, for drawing on Stripe */
+  --color-eye-simba: #c9c5a0; /* Simba's iris hue, lighter, for drawing on Stripe */
+
+  /* Roles */
+  --color-bg: var(--color-chin);
+  --color-text: var(--color-stripe);
+  --color-link: var(--color-olive);
+  --color-focus: var(--color-olive);
+
+  /* Type families. Fallbacks are picked to be similar in shape and width. */
+  --font-display: 'Caprasimo', 'Cooper Black', Georgia, serif;
+  --font-text: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
+
+  /*
+   * Fluid type scale: ratio 1.2 at a 360px viewport, growing to 1.25 at
+   * 1440px, with a 16px → 18px base. clamp() keeps every step between its
+   * two end sizes.
+   */
+  --step--1: clamp(0.833rem, 0.811rem + 0.099vw, 0.9rem);
+  --step-0: clamp(1rem, 0.958rem + 0.185vw, 1.125rem);
+  --step-1: clamp(1.2rem, 1.131rem + 0.306vw, 1.406rem);
+  --step-2: clamp(1.44rem, 1.334rem + 0.471vw, 1.758rem);
+  --step-3: clamp(1.728rem, 1.572rem + 0.695vw, 2.197rem);
+  --step-4: clamp(2.074rem, 1.849rem + 0.997vw, 2.747rem);
+  --step-5: clamp(2.488rem, 2.173rem + 1.4vw, 3.433rem);
+  --step-6: clamp(2.986rem, 2.551rem + 1.934vw, 4.292rem);
+
+  --leading-text: 1.5;
+  --leading-display: 1.05;
+  --measure: 65ch;
+
+  /* Fluid space scale, same 360px → 1440px range as the type scale */
+  --space-3xs: clamp(0.25rem, 0.229rem + 0.093vw, 0.313rem);
+  --space-2xs: clamp(0.5rem, 0.479rem + 0.093vw, 0.563rem);
+  --space-xs: clamp(0.75rem, 0.708rem + 0.185vw, 0.875rem);
+  --space-s: clamp(1rem, 0.958rem + 0.185vw, 1.125rem);
+  --space-m: clamp(1.5rem, 1.438rem + 0.278vw, 1.688rem);
+  --space-l: clamp(2rem, 1.917rem + 0.37vw, 2.25rem);
+  --space-xl: clamp(3rem, 2.875rem + 0.556vw, 3.375rem);
+  --space-2xl: clamp(4rem, 3.833rem + 0.741vw, 4.5rem);
+  --space-3xl: clamp(6rem, 5.75rem + 1.111vw, 6.75rem);
+
+  /* Layout */
+  --content-width: 72rem;
+  --gutter: max(1rem, 5vw);
+}

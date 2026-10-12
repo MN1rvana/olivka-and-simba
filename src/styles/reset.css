@@ -1,0 +1,52 @@
+/* A minimal reset: only rules that remove a default I'd otherwise undo. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  /* Stop iOS from enlarging text when the phone is turned sideways. */
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  /* Keeps the aspect ratio from the width/height attributes when CSS narrows the image. */
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+p,
+li,
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: break-word;
+}
