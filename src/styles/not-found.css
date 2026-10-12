@@ -1,0 +1,36 @@
+/* The 404 page: static HTML plus this file, no React. */
+@import '@fontsource/caprasimo/latin-400.css';
+@import '@fontsource-variable/atkinson-hyperlegible-next';
+@import './tokens.css';
+@import './reset.css';
+@import './base.css';
+
+:root {
+  --color-bg: var(--color-stripe);
+  --color-text: var(--color-golden);
+  --color-link: var(--color-chin);
+  --color-focus: var(--color-eye-olivka);
+}
+
+.not-found {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--space-s);
+  min-height: 100dvh;
+  padding: var(--space-xl) var(--gutter);
+  text-align: center;
+}
+
+.eyes {
+  width: min(60vw, 16rem);
+  margin-bottom: var(--space-m);
+  fill: none;
+  stroke: var(--color-eye-olivka);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.not-found p {
+  color: var(--color-chin);
+}
