@@ -1,6 +1,7 @@
 import {
   useLayoutEffect,
   useRef,
+  type CSSProperties,
   type KeyboardEvent,
   type MouseEvent,
   type PointerEvent,
@@ -124,14 +125,24 @@ export function Lightbox({ photos, index, sharedLayoutId, onNavigate, onClose }:
             onPointerUp={handlePointerUp}
             onPointerCancel={() => (swipeStart.current = null)}
           >
-            <Picture
-              key={photo.id}
-              photo={photo}
-              sizes="100vw"
-              priority
-              className={styles.picture}
-              layoutId={sharedLayoutId}
-            />
+            {/*
+             * Fills whatever height the grid leaves, so the photo can never
+             * cover the buttons. --ratio lets CSS size the photo before it
+             * loads (React's style type has no custom properties, hence the cast).
+             */}
+            <div
+              className={styles.stage}
+              style={{ '--ratio': photo.width / photo.height } as CSSProperties}
+            >
+              <Picture
+                key={photo.id}
+                photo={photo}
+                sizes="100vw"
+                priority
+                className={styles.picture}
+                layoutId={sharedLayoutId}
+              />
+            </div>
             <figcaption className={styles.caption}>
               {photo.caption && <span>{photo.caption}</span>}
               <span className={styles.counter}>
