@@ -1,0 +1,26 @@
+[
+  {
+    "id": "olivka-cat-bed",
+    "cat": "olivka",
+    "width": 640,
+    "height": 640,
+    "widths": [
+      480,
+      640
+    ],
+    "alt": "Olivka lying on a round white cat bed against a lilac wall, front paws hanging over the edge, looking straight at the camera.",
+    "placeholder": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAwAgCdASoQABAAA4BaJYgCdAC69ZZCWf5WgAD3hoEvGa6n32BMyaq4SWX0lVtgI7nVscXEgNtAbOaYqVnsXWs6aVzw+5ed15N034bk+WBvVxY+XW6zplO4OcnWLJZNpUzlMOff+uhAAA=="
+  },
+  {
+    "id": "simba-bedspread",
+    "cat": "simba",
+    "width": 640,
+    "height": 800,
+    "widths": [
+      480,
+      640
+    ],
+    "alt": "Simba lying on a quilted white bedspread, looking up at the camera with wide green eyes.",
+    "placeholder": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAAAwBACdASoQABQAPu1iqU2ppaOiMAgBMB2JYwC7AB4g4nkwl3vSPdO2/oAA/mWXZO8NrK1tdRIOdT/wy+fW+H/aMR3oOUvP+ELqZbhfofWNgCNo82zPeXfsmWBnxldmPpHkCyz62tIjHRqGrenk1SsQtw4q/bl9BZDFBzo1xmPQAA=="
+  }
+]

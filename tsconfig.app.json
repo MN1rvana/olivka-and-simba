@@ -9,6 +9,7 @@
 
     /* Bundler mode: Vite does the bundling, tsc only type-checks */
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
