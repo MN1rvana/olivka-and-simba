@@ -108,6 +108,9 @@
   .profile[data-cat='simba'] .photo {
     grid-column: 2;
     grid-row: 1;
+    /* Always start at the top, so the negative margin reaches into Olivka's
+     * band even when the text column is taller than the photo. */
+    align-self: start;
   }
 
   .profile[data-cat='simba'] .text {
