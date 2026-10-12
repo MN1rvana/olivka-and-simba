@@ -1,0 +1,21 @@
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Original photos stay on Maryna's machine: phone photos carry GPS
+# coordinates and full-resolution files are too heavy for the repo.
+# Only the optimized, metadata-stripped output gets committed.
+raw-photos/
+
+# Local env and editor files
+*.local
+.env*
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+npm-debug.log*
