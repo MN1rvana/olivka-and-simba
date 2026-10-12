@@ -1,0 +1,114 @@
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it } from 'vitest';
+import { Gallery } from './Gallery.tsx';
+
+const thumbnails = () => within(screen.getByRole('list')).getAllByRole('button');
+
+describe('Gallery filter', () => {
+  it('shows only the chosen cat and puts the filter in the URL', async () => {
+    const user = userEvent.setup();
+    render(<Gallery />);
+    expect(thumbnails()).toHaveLength(2);
+
+    await user.click(screen.getByRole('radio', { name: /simba/i }));
+
+    expect(window.location.search).toBe('?cat=simba');
+    expect(screen.getByRole('status')).toHaveTextContent('1 photo');
+    expect(thumbnails()).toHaveLength(1);
+    expect(thumbnails()[0]).toHaveAccessibleName(/simba/i);
+  });
+
+  it('starts from the filter in a shared link', () => {
+    window.history.replaceState(null, '', '/?cat=olivka');
+    render(<Gallery />);
+
+    expect(screen.getByRole('radio', { name: /olivka/i })).toBeChecked();
+    expect(thumbnails()).toHaveLength(1);
+  });
+
+  it('moves between filters with arrow keys, like any radio group', async () => {
+    const user = userEvent.setup();
+    render(<Gallery />);
+
+    await user.click(screen.getByRole('radio', { name: /all/i }));
+    await user.keyboard('{ArrowRight}');
+
+    expect(screen.getByRole('radio', { name: /olivka/i })).toBeChecked();
+    expect(window.location.search).toBe('?cat=olivka');
+  });
+
+  it('is a single tab stop: Tab goes into the group and straight out again', async () => {
+    const user = userEvent.setup();
+    render(<Gallery />);
+
+    await user.tab();
+    expect(screen.getByRole('radio', { name: /all/i })).toHaveFocus();
+
+    await user.tab();
+    expect(thumbnails()[0]).toHaveFocus();
+  });
+
+  it('says so when a filter has no photos', async () => {
+    const user = userEvent.setup();
+    render(<Gallery />);
+
+    await user.click(screen.getByRole('radio', { name: /both/i }));
+
+    expect(screen.getByRole('status')).toHaveTextContent('No photos here yet.');
+  });
+});
+
+describe('Lightbox keyboard navigation', () => {
+  it('opens on Enter, moves with arrow keys, and gives focus back on Escape', async () => {
+    const user = userEvent.setup();
+    render(<Gallery />);
+    const [first] = thumbnails();
+
+    first!.focus();
+    await user.keyboard('{Enter}');
+
+    const dialog = screen.getByRole('dialog', { name: 'Photo viewer' });
+    expect(dialog).toHaveAttribute('open');
+    expect(within(dialog).getByRole('button', { name: 'Close' })).toHaveFocus();
+    expect(within(dialog).getByText('1 of 2')).toBeInTheDocument();
+
+    await user.keyboard('{ArrowRight}');
+    expect(within(dialog).getByText('2 of 2')).toBeInTheDocument();
+    expect(within(dialog).getByText(/^Photo 2 of 2: /)).toBeInTheDocument();
+
+    await user.keyboard('{ArrowRight}');
+    expect(within(dialog).getByText('1 of 2')).toBeInTheDocument();
+
+    await user.keyboard('{ArrowLeft}');
+    expect(within(dialog).getByText('2 of 2')).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+    expect(dialog).not.toHaveAttribute('open');
+    // Back on the thumbnail that opened it, even though a different photo was showing.
+    expect(first).toHaveFocus();
+  });
+
+  it('only moves through the photos the filter shows', async () => {
+    const user = userEvent.setup();
+    window.history.replaceState(null, '', '/?cat=simba');
+    render(<Gallery />);
+
+    await user.click(thumbnails()[0]!);
+    const dialog = screen.getByRole('dialog', { name: 'Photo viewer' });
+
+    expect(within(dialog).getByText('1 of 1')).toBeInTheDocument();
+    expect(within(dialog).queryByRole('button', { name: 'Next' })).not.toBeInTheDocument();
+  });
+
+  it('closes with the Close button', async () => {
+    const user = userEvent.setup();
+    render(<Gallery />);
+
+    await user.click(thumbnails()[1]!);
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(screen.getByRole('dialog', { hidden: true })).not.toHaveAttribute('open');
+    expect(thumbnails()[1]).toHaveFocus();
+  });
+});
