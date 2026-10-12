@@ -73,3 +73,8 @@ a:hover {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* The page behind an open modal (the lightbox) shouldn't scroll. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
