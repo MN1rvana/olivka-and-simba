@@ -14,8 +14,8 @@ export function App() {
       <Hero />
       {/* tabIndex -1 lets the skip link move focus here, not just scroll. */}
       <main id={MAIN_ID} tabIndex={-1} className={styles.main}>
-        {cats.map((cat) => (
-          <CatProfile key={cat.id} cat={cat} />
+        {cats.map((cat, index) => (
+          <CatProfile key={cat.id} cat={cat} priority={index === 0} />
         ))}
       </main>
       <SiteFooter />

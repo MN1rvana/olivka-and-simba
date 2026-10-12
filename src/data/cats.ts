@@ -15,6 +15,8 @@ export interface Cat {
   /** ISO date, YYYY-MM-DD. The site works out the age from it, so it never goes stale. */
   birthday: string | null;
   coat: string;
+  /** id of the photo in photos.json shown in this cat's section. */
+  portraitId: string;
   /** Paragraphs, in Maryna's voice. */
   bio: readonly string[];
   /** 3–5 short words or phrases. Rendered as one sentence: "Olivka is a, b, and c." */
@@ -29,6 +31,7 @@ export const cats: readonly Cat[] = [
     name: 'Olivka',
     birthday: null, // TODO(Maryna): 'YYYY-MM-DD'
     coat: 'Golden British Shorthair',
+    portraitId: 'olivka-cat-bed',
     bio: [
       'TODO(Maryna): a short bio, 2–3 sentences. How Olivka came home, and what Olivka is like.',
     ],
@@ -41,6 +44,7 @@ export const cats: readonly Cat[] = [
     name: 'Simba',
     birthday: null, // TODO(Maryna): 'YYYY-MM-DD'
     coat: 'Golden British Shorthair',
+    portraitId: 'simba-bedspread',
     bio: ['TODO(Maryna): a short bio, 2–3 sentences. How Simba came home, and what Simba is like.'],
     traits: ['TODO(Maryna): 3–5 traits'],
     favorites: ['TODO(Maryna): favorite things'],

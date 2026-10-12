@@ -1,0 +1,21 @@
+.picture {
+  display: block;
+  /* The placeholder is 16px wide. Stretched to full size, the browser's smoothing turns it into a soft blur. */
+  background-size: cover;
+  background-position: center;
+}
+
+.picture img {
+  width: 100%;
+  transition: opacity 400ms ease-out;
+}
+
+.picture[data-loaded='false'] img {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .picture img {
+    transition: none;
+  }
+}

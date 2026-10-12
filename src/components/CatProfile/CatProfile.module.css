@@ -1,8 +1,9 @@
 /*
  * Shared structure, two characters:
- * - Olivka: Ticked ground, light text, a tall photo on the left, text at the top.
- * - Simba: Golden ground, dark text, a larger square photo on the right that
+ * - Olivka: Ticked ground, light text, photo on the left, text at the top.
+ * - Simba: Golden ground, dark text, a larger photo on the right that
  *   breaks out into Olivka's band, text sitting lower.
+ * Photos keep their own aspect ratio. The layout adapts to them, not the other way round.
  */
 
 .profile {
@@ -42,14 +43,13 @@
 .photo {
   /* Positioned, so it paints above Olivka's section where the two overlap. */
   position: relative;
-  /* Photos are the only things allowed to touch the viewport edge. */
+  /* Photos are the only things allowed to touch the viewport edge. The reset
+   * caps <picture> at max-width: 100%, which would cancel the negative margins. */
+  max-width: none;
   margin-inline: calc(-1 * var(--gutter));
-  aspect-ratio: 4 / 5;
-  background-color: color-mix(in oklab, var(--color-bg), var(--color-stripe) 30%);
 }
 
 .profile[data-cat='simba'] .photo {
-  aspect-ratio: 1;
   margin-top: calc(-1 * (var(--space-2xl) + var(--overlap)));
 }
 
