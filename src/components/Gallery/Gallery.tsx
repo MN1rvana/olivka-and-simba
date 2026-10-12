@@ -10,11 +10,17 @@ import styles from './Gallery.module.css';
 
 const counts = countByFilter(photos);
 
+const layoutIdFor = (photoId: string) => `photo-${photoId}`;
+
 export function Gallery() {
   const [filter, setFilter] = usePhotoFilter();
   const visible = filterPhotos(photos, filter);
 
   const [openId, setOpenId] = useState<string | null>(null);
+  // The lightbox only flies out of the thumbnail that opened it. After the
+  // first ←/→ it stops sharing layout, so a later photo doesn't fly in
+  // from somewhere else on the page.
+  const [hasNavigated, setHasNavigated] = useState(false);
   // Which thumbnail opened the lightbox, so focus can go back to it on close.
   const openerId = useRef<string | null>(null);
   const thumbnails = useRef(new Map<string, HTMLButtonElement>());
@@ -23,7 +29,13 @@ export function Gallery() {
 
   function open(id: string) {
     openerId.current = id;
+    setHasNavigated(false);
     setOpenId(id);
+  }
+
+  function navigate(index: number) {
+    setHasNavigated(true);
+    setOpenId(visible[index]?.id ?? null);
   }
 
   function close() {
@@ -71,10 +83,11 @@ export function Gallery() {
                 // photo in a row ends up the same height.
                 style={{ flexGrow: ratio, flexBasis: `calc(${ratio} * var(--row-height))` }}
               >
-                <button
+                <motion.button
                   type="button"
                   className={styles.thumb}
                   onClick={() => open(photo.id)}
+                  whileTap={{ scale: 0.97 }}
                   ref={(node) => {
                     if (node) thumbnails.current.set(photo.id, node);
                     return () => {
@@ -85,8 +98,9 @@ export function Gallery() {
                   <Picture
                     photo={photo}
                     sizes="(min-width: 60rem) 33vw, (min-width: 30rem) 50vw, 100vw"
+                    layoutId={layoutIdFor(photo.id)}
                   />
-                </button>
+                </motion.button>
               </motion.li>
             );
           })}
@@ -96,7 +110,8 @@ export function Gallery() {
       <Lightbox
         photos={visible}
         index={openIndex === -1 ? null : openIndex}
-        onNavigate={(index) => setOpenId(visible[index]?.id ?? null)}
+        sharedLayoutId={openId && !hasNavigated ? layoutIdFor(openId) : undefined}
+        onNavigate={navigate}
         onClose={close}
       />
     </section>

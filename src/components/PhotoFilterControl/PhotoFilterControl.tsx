@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import { PHOTO_FILTERS, type PhotoFilter } from '../../lib/gallery.ts';
 import styles from './PhotoFilterControl.module.css';
 
@@ -24,7 +25,7 @@ export function PhotoFilterControl({ value, counts, onChange }: PhotoFilterContr
     <fieldset className={styles.control}>
       <legend className="visually-hidden">Show photos of</legend>
       {PHOTO_FILTERS.map((filter) => (
-        <label key={filter} className={styles.option}>
+        <motion.label key={filter} className={styles.option} whileTap={{ scale: 0.96 }}>
           <input
             type="radio"
             name="photo-filter"
@@ -33,7 +34,7 @@ export function PhotoFilterControl({ value, counts, onChange }: PhotoFilterContr
             onChange={() => onChange(filter)}
           />
           {LABELS[filter]} <span className={styles.count}>{counts[filter]}</span>
-        </label>
+        </motion.label>
       ))}
     </fieldset>
   );

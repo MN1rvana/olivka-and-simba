@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 import type { Photo } from '../../data/photos.ts';
 import { buildSrcSet, largestWidth, photoUrl } from '../../lib/photos.ts';
 import styles from './Picture.module.css';
@@ -10,6 +11,8 @@ interface PictureProps {
   /** Use eager + priority only for an image that is likely in the first viewport. */
   priority?: boolean;
   className?: string | undefined;
+  /** Shared-layout id. Two Pictures with the same id animate from one position to the other. */
+  layoutId?: string | undefined;
 }
 
 /**
@@ -18,11 +21,14 @@ interface PictureProps {
  * loads. Until then the tiny placeholder shows through, and the real image
  * fades in over it.
  */
-export function Picture({ photo, sizes, priority = false, className }: PictureProps) {
+export function Picture({ photo, sizes, priority = false, className, layoutId }: PictureProps) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <picture
+    <motion.picture
+      // Spread, because with exactOptionalPropertyTypes motion's layoutId
+      // accepts a string or no prop at all, but not undefined.
+      {...(layoutId ? { layoutId } : {})}
       className={className ? `${styles.picture} ${className}` : styles.picture}
       style={{ backgroundImage: `url(${photo.placeholder})` }}
       data-loaded={loaded}
@@ -39,6 +45,6 @@ export function Picture({ photo, sizes, priority = false, className }: PicturePr
         decoding="async"
         onLoad={() => setLoaded(true)}
       />
-    </picture>
+    </motion.picture>
   );
 }

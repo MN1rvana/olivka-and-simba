@@ -10,7 +10,9 @@
   margin: 0;
   padding: var(--space-s) var(--gutter);
   border: 0;
-  background-color: var(--color-bg);
+  /* The dark ground comes from ::backdrop, which fades in, so the photo is
+   * seen growing out of its thumbnail rather than appearing on a black screen. */
+  background-color: transparent;
   color: var(--color-text);
 }
 
@@ -24,6 +26,14 @@
 
 .lightbox::backdrop {
   background-color: var(--color-stripe);
+  transition: opacity 250ms ease-out;
+}
+
+/* The first frame after the dialog opens, so the transition has a value to start from. */
+@starting-style {
+  .lightbox[open]::backdrop {
+    opacity: 0;
+  }
 }
 
 .lightbox > .button:first-child {

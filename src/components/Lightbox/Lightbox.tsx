@@ -1,4 +1,11 @@
-import { useEffect, useRef, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react';
+import {
+  useLayoutEffect,
+  useRef,
+  type KeyboardEvent,
+  type MouseEvent,
+  type PointerEvent,
+} from 'react';
+import { motion } from 'motion/react';
 import type { Photo } from '../../data/photos.ts';
 import { wrapIndex } from '../../lib/gallery.ts';
 import { Picture } from '../Picture/Picture.tsx';
@@ -11,6 +18,8 @@ interface LightboxProps {
   photos: readonly Photo[];
   /** Index of the photo on screen, or null when the lightbox is closed. */
   index: number | null;
+  /** When set, the photo grows out of the thumbnail with the same layoutId. */
+  sharedLayoutId?: string | undefined;
   onNavigate: (index: number) => void;
   onClose: () => void;
 }
@@ -20,7 +29,7 @@ interface LightboxProps {
  * page inert, so focus stays inside without a hand-written focus trap, and
  * Esc closes it. The Gallery returns focus to the thumbnail that opened it.
  */
-export function Lightbox({ photos, index, onNavigate, onClose }: LightboxProps) {
+export function Lightbox({ photos, index, sharedLayoutId, onNavigate, onClose }: LightboxProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const swipeStart = useRef<{ x: number; y: number } | null>(null);
@@ -29,8 +38,10 @@ export function Lightbox({ photos, index, onNavigate, onClose }: LightboxProps) 
   const canNavigate = photos.length > 1;
 
   // <dialog> is opened and closed by calling methods on it, so this keeps it
-  // in sync with the index prop.
-  useEffect(() => {
+  // in sync with the index prop. A layout effect, so the dialog is already
+  // open (and measurable) when motion measures the photo for the shared
+  // layout animation.
+  useLayoutEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
 
@@ -95,14 +106,15 @@ export function Lightbox({ photos, index, onNavigate, onClose }: LightboxProps) 
       onKeyDown={handleKeyDown}
       onClick={handleClick}
     >
-      <button
+      <motion.button
         ref={closeButtonRef}
         type="button"
         className={styles.button}
         onClick={() => dialogRef.current?.close()}
+        whileTap={{ scale: 0.96 }}
       >
         Close
-      </button>
+      </motion.button>
 
       {photo && index !== null && (
         <>
@@ -118,6 +130,7 @@ export function Lightbox({ photos, index, onNavigate, onClose }: LightboxProps) 
               sizes="100vw"
               priority
               className={styles.picture}
+              layoutId={sharedLayoutId}
             />
             <figcaption className={styles.caption}>
               {photo.caption && <span>{photo.caption}</span>}
@@ -129,12 +142,22 @@ export function Lightbox({ photos, index, onNavigate, onClose }: LightboxProps) 
 
           {canNavigate && (
             <div className={styles.nav}>
-              <button type="button" className={styles.button} onClick={() => step(-1)}>
+              <motion.button
+                type="button"
+                className={styles.button}
+                onClick={() => step(-1)}
+                whileTap={{ scale: 0.96 }}
+              >
                 Previous
-              </button>
-              <button type="button" className={styles.button} onClick={() => step(1)}>
+              </motion.button>
+              <motion.button
+                type="button"
+                className={styles.button}
+                onClick={() => step(1)}
+                whileTap={{ scale: 0.96 }}
+              >
                 Next
-              </button>
+              </motion.button>
             </div>
           )}
 
