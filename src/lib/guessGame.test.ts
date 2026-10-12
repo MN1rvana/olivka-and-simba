@@ -37,19 +37,33 @@ describe('playablePhotos and canPlay', () => {
 });
 
 describe('pickRound', () => {
-  it('uses the random number to choose a photo', () => {
-    expect(pickRound(playable, null, () => 0)).toEqual({ photoId: 'olivka-1', answer: 'olivka' });
-    expect(pickRound(playable, null, () => 0.99)).toEqual({ photoId: 'simba-1', answer: 'simba' });
+  /** A random function that returns the given numbers in order. */
+  const sequence = (...values: number[]) => {
+    let call = 0;
+    return () => values[call++ % values.length]!;
+  };
+
+  const twoOlivkas = playablePhotos([olivkaPhoto, photo('olivka-2', 'olivka'), simbaPhoto]);
+
+  it('picks a cat first, then a photo of that cat', () => {
+    expect(pickRound(playable, null, sequence(0, 0))).toEqual({
+      photoId: 'olivka-1',
+      answer: 'olivka',
+    });
+    expect(pickRound(playable, null, sequence(0.99, 0))).toEqual({
+      photoId: 'simba-1',
+      answer: 'simba',
+    });
   });
 
-  it('never shows the same photo twice in a row', () => {
-    for (const random of [0, 0.3, 0.6, 0.99]) {
-      expect(pickRound(playable, 'olivka-1', () => random).photoId).toBe('simba-1');
+  it('can ask about the same cat twice in a row, so answers never just alternate', () => {
+    expect(pickRound(playable, 'olivka-1', sequence(0, 0)).answer).toBe('olivka');
+  });
+
+  it('avoids the previous photo when that cat has another one', () => {
+    for (const second of [0, 0.5, 0.99]) {
+      expect(pickRound(twoOlivkas, 'olivka-1', sequence(0, second)).photoId).toBe('olivka-2');
     }
-  });
-
-  it('repeats the photo when there is only one', () => {
-    expect(pickRound([playable[0]!], 'olivka-1', () => 0).photoId).toBe('olivka-1');
   });
 
   it('throws when there is nothing to pick', () => {

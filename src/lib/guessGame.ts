@@ -31,7 +31,13 @@ export function canPlay(photos: readonly PlayablePhoto[]): boolean {
 }
 
 /**
- * Picks the next photo at random, never the same one twice in a row.
+ * Picks the next round in two steps: a cat at random, then a photo of that
+ * cat, avoiding the previous photo when that cat has another one.
+ *
+ * Choosing the cat first keeps every answer a fair coin toss. Simply never
+ * repeating a photo made the answers alternate (Olivka, Simba, Olivka…)
+ * when each cat had a single photo, so one right guess gave the rest away.
+ *
  * `random` is injected (Math.random by default), so tests can make it predictable.
  */
 export function pickRound(
@@ -39,7 +45,10 @@ export function pickRound(
   previousId: string | null,
   random: () => number = Math.random,
 ): Round {
-  const candidates = photos.length > 1 ? photos.filter((photo) => photo.id !== previousId) : photos;
+  const catsInPhotos = [...new Set(photos.map((photo) => photo.cat))];
+  const cat = catsInPhotos[Math.floor(random() * catsInPhotos.length)];
+  const ofCat = photos.filter((photo) => photo.cat === cat);
+  const candidates = ofCat.length > 1 ? ofCat.filter((photo) => photo.id !== previousId) : ofCat;
   const photo = candidates[Math.floor(random() * candidates.length)];
 
   if (!photo) {

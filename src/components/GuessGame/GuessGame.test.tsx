@@ -8,7 +8,7 @@ const score = () => screen.getByText(/^Streak/);
 
 describe('GuessGame', () => {
   beforeEach(() => {
-    // Math.random() = 0 picks the first playable photo, which is Olivka's.
+    // Math.random() = 0 picks the first cat (Olivka) and her first photo.
     vi.spyOn(Math, 'random').mockReturnValue(0);
   });
 
@@ -51,7 +51,8 @@ describe('GuessGame', () => {
 
     screen.getByRole('button', { name: 'Olivka' }).focus();
     await user.keyboard('{Enter}'); // guess Olivka: right
-    await user.keyboard('{Enter}'); // Next photo: never the same one twice, so Simba's
+    vi.mocked(Math.random).mockReturnValue(0.99); // the next round picks Simba
+    await user.keyboard('{Enter}'); // Next photo
 
     expect(screen.getByRole('button', { name: 'Olivka' })).toHaveFocus();
     await user.tab();
