@@ -38,6 +38,21 @@
   outline-offset: 3px;
 }
 
+/*
+ * Press feedback in CSS, not motion's whileTap: whileTap gives elements that
+ * aren't focusable a tabindex="0", which turned every label into an extra
+ * Tab stop next to its radio.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .option {
+    transition: transform 120ms ease-out;
+  }
+
+  .option:active {
+    transform: scale(0.96);
+  }
+}
+
 .count {
   font-weight: 400;
   font-variant-numeric: tabular-nums;
