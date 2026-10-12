@@ -1,0 +1,44 @@
+.control {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3xs);
+  padding: 0;
+  border: 0;
+}
+
+.option {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  /* At least 44px tall, so it's easy to hit on a phone. */
+  min-height: 2.75rem;
+  padding: var(--space-2xs) var(--space-s);
+  border: 2px solid var(--color-text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* The input stays in the page for keyboards and screen readers. The label is what you see. */
+.option input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.option:has(input:checked) {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+.option:has(input:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.count {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}

@@ -1,4 +1,5 @@
 import { CatProfile } from './components/CatProfile/CatProfile.tsx';
+import { Gallery } from './components/Gallery/Gallery.tsx';
 import { Hero } from './components/Hero/Hero.tsx';
 import { SiteFooter } from './components/SiteFooter/SiteFooter.tsx';
 import { SkipLink } from './components/SkipLink/SkipLink.tsx';
@@ -17,6 +18,7 @@ export function App() {
         {cats.map((cat, index) => (
           <CatProfile key={cat.id} cat={cat} priority={index === 0} />
         ))}
+        <Gallery />
       </main>
       <SiteFooter />
     </>

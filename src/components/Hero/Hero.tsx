@@ -18,6 +18,9 @@ export function Hero() {
               <a href={`#${cat.id}`}>{cat.name}</a>
             </li>
           ))}
+          <li>
+            <a href="#photos">Photos</a>
+          </li>
         </ul>
       </nav>
 
