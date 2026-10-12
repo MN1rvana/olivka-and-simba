@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Olivka's eyes from the hero, on the Stripe ground. Colors from src/styles/tokens.css. -->
+  <rect width="64" height="64" rx="14" fill="#241d16"/>
+  <ellipse cx="19" cy="34" rx="12" ry="10" fill="#a9b98f"/>
+  <ellipse cx="45" cy="34" rx="12" ry="10" fill="#a9b98f"/>
+  <ellipse cx="19" cy="35" rx="2.5" ry="7.5" fill="#241d16"/>
+  <ellipse cx="45" cy="35" rx="2.5" ry="7.5" fill="#241d16"/>
+  <path d="M6 22 H32 V28 L6 25 Z M32 22 H58 V25 L32 28 Z" fill="#241d16"/>
+</svg>
