@@ -6,6 +6,10 @@ import { afterEach } from 'vitest';
 // Tests check what happens, not how it animates: motion jumps straight to the end state.
 MotionGlobalConfig.skipAnimations = true;
 
+// Tells React that tests wrap updates in act(). Testing Library sets this when
+// imported; the hydration tests use react-dom directly, so it's set here for all.
+(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+
 afterEach(() => {
   cleanup();
   localStorage.clear();

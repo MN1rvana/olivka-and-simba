@@ -72,6 +72,15 @@ describe('pickRound', () => {
 });
 
 describe('gameReducer', () => {
+  it('starts with a round and the saved best', () => {
+    const started = gameReducer(createInitialState(null, 0), {
+      type: 'start',
+      round: { photoId: 'simba-1', answer: 'simba' },
+      best: 4,
+    });
+    expect(started).toMatchObject({ round: { answer: 'simba' }, guess: null, streak: 0, best: 4 });
+  });
+
   it('counts a right guess towards the streak and the best', () => {
     const next = gameReducer(startingWith('simba'), { type: 'guess', guess: 'simba' });
     expect(next).toMatchObject({ guess: 'simba', streak: 1, best: 1 });
