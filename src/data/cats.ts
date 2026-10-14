@@ -31,7 +31,7 @@ export const cats: readonly Cat[] = [
     name: 'Olivka',
     birthday: null, // TODO(Maryna): 'YYYY-MM-DD'
     coat: 'Golden British Shorthair',
-    portraitId: 'olivka-cat-bed',
+    portraitId: 'olivka-bathtub',
     bio: [], // TODO(Maryna): 2–3 sentences. How Olivka came home, and what Olivka is like.
     traits: [], // TODO(Maryna): 3–5 traits
     favorites: [], // TODO(Maryna): favorite things
@@ -42,7 +42,7 @@ export const cats: readonly Cat[] = [
     name: 'Simba',
     birthday: null, // TODO(Maryna): 'YYYY-MM-DD'
     coat: 'Golden British Shorthair',
-    portraitId: 'simba-bedspread',
+    portraitId: 'simba-teal-bedspread',
     bio: [], // TODO(Maryna): 2–3 sentences. How Simba came home, and what Simba is like.
     traits: [], // TODO(Maryna): 3–5 traits
     favorites: [], // TODO(Maryna): favorite things

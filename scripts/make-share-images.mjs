@@ -20,8 +20,8 @@ const APP = path.join(ROOT, 'src', 'app');
 const manifest = JSON.parse(await readFile(path.join(ROOT, 'src', 'data', 'photos.json'), 'utf8'));
 
 // The same photos as the portraits in src/data/cats.ts. Change both together.
-const LEFT = 'olivka-cat-bed';
-const RIGHT = 'simba-bedspread';
+const LEFT = 'olivka-bathtub';
+const RIGHT = 'simba-teal-bedspread';
 
 const WIDTH = 1200;
 const HEIGHT = 630;
