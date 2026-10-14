@@ -27,9 +27,11 @@ const getServerSearch = () => '';
  * re-renders with the real ?cat, so there's no hydration mismatch.
  *
  * replaceState, not pushState: changing a filter isn't navigation, so it
- * shouldn't fill the Back button's history. Next.js picks up native
- * replaceState calls too, and passing history.state through keeps its
- * router state.
+ * shouldn't fill the Back button's history. The state argument is null on
+ * purpose. Next.js watches native replaceState calls and updates its own
+ * router URL, unless the state carries its internal flag. Passing
+ * history.state through looked harmless but carried that flag, so Next
+ * kept the old URL and wrote it back on its next update, dropping ?cat.
  */
 export function usePhotoFilter(): [PhotoFilter, (filter: PhotoFilter) => void] {
   const search = useSyncExternalStore(subscribe, getSearch, getServerSearch);
@@ -37,7 +39,7 @@ export function usePhotoFilter(): [PhotoFilter, (filter: PhotoFilter) => void] {
   const setFilter = useCallback((next: PhotoFilter) => {
     const url = new URL(window.location.href);
     url.search = searchWithFilter(url.search, next);
-    window.history.replaceState(window.history.state, '', url);
+    window.history.replaceState(null, '', url);
     window.dispatchEvent(new Event(FILTER_CHANGE));
   }, []);
 
