@@ -54,11 +54,11 @@ There are 58 tests and no snapshots. The rules live in pure functions: the filte
 
 The most useful bug I found wasn't from a tool. motion's press animation was quietly making each filter label an extra Tab stop. axe was happy with it. I wrote a test that failed, then fixed it.
 
-Lighthouse on a mobile profile, on the live site: Performance 99–100, Accessibility 100, Best Practices 100, SEO 100, with layout shift at 0.
+Lighthouse on a mobile profile, on the live site with all 17 photos: Performance 97–100, Accessibility 100, Best Practices 100, SEO 100, with layout shift at 0.
 
 ## What I'd do next
 
-- Add more photos, including some of the two of them together.
+- Add photos of the two of them together. The "Both" filter is still empty.
 - Ship less JavaScript. The page loads about 230 kB gzipped, mostly React and the Next.js runtime. I tried motion's `LazyMotion` and measured no saving, because Next still references the split chunk from the page, and the eyes' `useAnimate` needs the animation engine anyway.
 - Add Playwright tests in real browsers for what jsdom can't check: dialog inertness, reduced motion, real layout.
 - Add a Ukrainian and a Polish version.
