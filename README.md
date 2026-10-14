@@ -2,7 +2,7 @@
   TODO(Maryna): this is a draft written for you to edit. Read it out loud,
   change anything that doesn't sound like you, and delete this comment.
   Also decide how you want to mention that you built this with an AI pair
-  programmer (the commits carry a Co-Authored-By line).
+  programmer.
 -->
 
 # Olivka & Simba
@@ -15,7 +15,7 @@ A small website about my two golden British Shorthairs, Olivka and Simba. You ca
 
 ## Stack
 
-- Vite, React 19, TypeScript in strict mode
+- Next.js 16 (App Router, static export), React 19, TypeScript in strict mode
 - CSS Modules and CSS custom properties, written by hand
 - [motion](https://motion.dev) for layout and shared-element animation
 - [sharp](https://sharp.pixelplumbing.com) for the image pipeline
@@ -23,6 +23,14 @@ A small website about my two golden British Shorthairs, Olivka and Simba. You ca
 - ESLint, Prettier, GitHub Actions, GitHub Pages
 
 ## Decisions I made, and why
+
+### Next.js, exported as plain files
+
+GitHub Pages can only serve static files, so `next build` exports the whole site to `out/` (`output: 'export'`), with no server at runtime. The page is a server component. At build time it renders the cats' sections, photos and gallery to HTML, so they're there before any JavaScript runs. Only the parts that react to you (the hero, the gallery, the game) are client components, and they hydrate in the browser.
+
+The tricky part was hydration. The static HTML and the browser's first render have to match, and three things only exist in the browser: the `?cat=` filter in the URL, the game's random photo plus your saved best streak, and today's date (for the cats' ages). The filter reads the URL through `useSyncExternalStore`, which has a separate server value. The game starts after mount. The age is worked out in the browser. A test renders the page to HTML the way the build does, hydrates it, and fails on any mismatch.
+
+Fonts go through `next/font/local`, using the Fontsource files. They're preloaded, and the fallback fonts get adjusted metrics, so text doesn't jump when the real font arrives. The icon and the link-preview image are files in `src/app/`, and Next writes their tags, base path included.
 
 ### The colors come from the cats
 
@@ -42,18 +50,17 @@ There's one bold moment: press "Blink slowly at them" and the cats blink back, S
 
 ### Tests describe behaviour, not markup
 
-There are 52 tests and no snapshots. The rules live in pure functions: the filter, and the game as a reducer with its randomness passed in. React Testing Library tests use the site the way a keyboard user would. axe checks the page in three states. One test fails if a photo still has placeholder alt text. In CI, the deploy job only runs after formatting, lint, types, tests, the photo check and the build all pass.
+There are 58 tests and no snapshots. The rules live in pure functions: the filter, and the game as a reducer with its randomness passed in. React Testing Library tests use the site the way a keyboard user would. axe checks the page in three states. One test fails if a photo still has placeholder alt text. In CI, the deploy job only runs after formatting, lint, types, tests, the photo check and the build all pass.
 
 The most useful bug I found wasn't from a tool. motion's press animation was quietly making each filter label an extra Tab stop. axe was happy with it. I wrote a test that failed, then fixed it.
 
-Lighthouse on a mobile profile, production build: Performance 97, Accessibility 100, Best Practices 100, SEO 100.
+Lighthouse on a mobile profile, production build: Performance 96, Accessibility 100, Best Practices 100, SEO 100, with layout shift at 0.
 
 ## What I'd do next
 
 - Add more photos, including some of the two of them together.
-- Load motion's layout features lazily, which would cut about 40 kB of JavaScript from the first load.
+- Ship less JavaScript. The page loads about 230 kB gzipped, mostly React and the Next.js runtime. I tried motion's `LazyMotion` and measured no saving, because Next still references the split chunk from the page, and the eyes' `useAnimate` needs the animation engine anyway.
 - Add Playwright tests in real browsers for what jsdom can't check: dialog inertness, reduced motion, real layout.
-- Use size-adjusted fallback fonts, so text doesn't shift when the display font arrives.
 - Add a Ukrainian and a Polish version.
 
 ## Running it locally
@@ -66,13 +73,13 @@ npm ci
 npm run dev
 ```
 
-Then open http://localhost:5173/olivka-and-simba/.
+Then open http://localhost:3000/olivka-and-simba.
 
 | Command                | What it does                                                  |
 | ---------------------- | ------------------------------------------------------------- |
 | `npm test`             | Runs the tests once (`npm run test:watch` keeps them running) |
 | `npm run lint`         | ESLint with type-aware rules                                  |
-| `npm run build`        | Type-checks and builds to `dist/`                             |
+| `npm run build`        | Type-checks and exports the static site to `out/`             |
 | `npm run photos`       | Optimizes originals from `raw-photos/` into `public/photos/`  |
 | `npm run photos:check` | Fails if any optimized photo still has metadata               |
 | `npm run share-images` | Rebuilds the link-preview image and the home-screen icon      |
