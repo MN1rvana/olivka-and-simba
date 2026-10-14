@@ -17,7 +17,10 @@ export interface GameState {
   best: number;
 }
 
-export type GameAction = { type: 'guess'; guess: CatId } | { type: 'next'; round: Round };
+export type GameAction =
+  | { type: 'start'; round: Round | null; best: number }
+  | { type: 'guess'; guess: CatId }
+  | { type: 'next'; round: Round };
 
 export function playablePhotos(photos: readonly Photo[]): PlayablePhoto[] {
   return photos.filter((photo): photo is PlayablePhoto => photo.cat !== 'both');
@@ -65,6 +68,10 @@ export function createInitialState(round: Round | null, best: number): GameState
 /** All game rules live here, as a pure function: (state, action) → next state. */
 export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
+    // The first round and the saved best only exist in the browser, so the
+    // game starts empty and gets them once it's running there.
+    case 'start':
+      return createInitialState(action.round, Math.max(state.best, action.best));
     case 'guess': {
       // One guess per photo. A second click before "Next photo" changes nothing.
       if (!state.round || state.guess !== null) return state;

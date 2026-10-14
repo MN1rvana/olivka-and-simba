@@ -14,6 +14,10 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
+env:
+  # Don't send Next.js usage telemetry from CI.
+  NEXT_TELEMETRY_DISABLED: 1
+
 jobs:
   check:
     name: Lint, typecheck, test, build
@@ -39,11 +43,12 @@ jobs:
       - run: npm run photos:check
       - run: npm run build
 
-      # Only main is published, so only main needs the artifact.
+      # Only main is published, so only main needs the artifact. next build
+      # writes the static site to out/.
       - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v5
         with:
-          path: dist
+          path: out
 
   deploy:
     # needs: the site is only published when every check above passed.

@@ -25,9 +25,10 @@
   --color-link: var(--color-olive);
   --color-focus: var(--color-olive);
 
-  /* Type families. Fallbacks are picked to be similar in shape and width. */
-  --font-display: 'Caprasimo', 'Cooper Black', Georgia, serif;
-  --font-text: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
+  /* Type families. --font-caprasimo and --font-atkinson come from next/font in
+   * app/layout.tsx and already include a metric-matched fallback font. */
+  --font-display: var(--font-caprasimo), 'Cooper Black', Georgia, serif;
+  --font-text: var(--font-atkinson), system-ui, sans-serif;
 
   /*
    * Fluid type scale: ratio 1.2 at a 360px viewport, growing to 1.25 at

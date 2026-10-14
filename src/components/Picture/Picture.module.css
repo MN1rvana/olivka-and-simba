@@ -10,7 +10,7 @@
   transition: opacity 400ms ease-out;
 }
 
-.picture[data-loaded='false'] img {
+.picture[data-status='loading'] img {
   opacity: 0;
 }
 

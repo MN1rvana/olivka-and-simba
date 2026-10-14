@@ -2,9 +2,9 @@ import type { Photo } from '../data/photos.ts';
 
 export type ImageFormat = 'avif' | 'webp';
 
-/** URL of one generated file. BASE_URL is "/olivka-and-simba/" in production. */
+/** URL of one generated file. The base path is "/olivka-and-simba" in production, empty in tests. */
 export function photoUrl(photo: Photo, width: number, format: ImageFormat): string {
-  return `${import.meta.env.BASE_URL}photos/${photo.id}-${width}.${format}`;
+  return `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/photos/${photo.id}-${width}.${format}`;
 }
 
 /** "…-480.avif 480w, …-960.avif 960w". The browser picks one using `sizes` and the screen density. */

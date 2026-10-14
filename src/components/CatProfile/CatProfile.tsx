@@ -1,7 +1,7 @@
 import type { Cat } from '../../data/cats.ts';
 import { getPhoto } from '../../data/photos.ts';
-import { getAgeInYears } from '../../lib/age.ts';
 import { formatBirthday, joinAsSentenceList } from '../../lib/format.ts';
+import { CatAge } from '../CatAge/CatAge.tsx';
 import { Picture } from '../Picture/Picture.tsx';
 import styles from './CatProfile.module.css';
 
@@ -15,8 +15,6 @@ interface CatProfileProps {
   cat: Cat;
   /** The first section starts inside the first screen, so its photo loads with high priority. */
   priority?: boolean;
-  /** Injected so the age can be tested against a fixed date. */
-  today?: Date;
 }
 
 /*
@@ -24,7 +22,7 @@ interface CatProfileProps {
  * characters: CatProfile.module.css gives each cat its own ground color,
  * proportions and photo position, keyed off data-cat.
  */
-export function CatProfile({ cat, priority = false, today = new Date() }: CatProfileProps) {
+export function CatProfile({ cat, priority = false }: CatProfileProps) {
   const headingId = `${cat.id}-heading`;
   const portrait = getPhoto(cat.portraitId);
 
@@ -46,7 +44,8 @@ export function CatProfile({ cat, priority = false, today = new Date() }: CatPro
             {cat.coat}
             {cat.birthday && (
               <>
-                , born {formatBirthday(cat.birthday)} ({getAgeInYears(cat.birthday, today)})
+                , born {formatBirthday(cat.birthday)}
+                <CatAge birthday={cat.birthday} />
               </>
             )}
           </p>

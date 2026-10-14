@@ -1,8 +1,10 @@
 # Dependencies and build output
 node_modules/
-dist/
+.next/
+out/
 coverage/
 *.tsbuildinfo
+next-env.d.ts
 
 # Original photos stay on Maryna's machine: phone photos carry GPS
 # coordinates and full-resolution files are too heavy for the repo.

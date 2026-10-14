@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { cats } from '../../data/cats.ts';

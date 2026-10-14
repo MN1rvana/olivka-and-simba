@@ -7,7 +7,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  globalIgnores(['dist', 'coverage']),
+  globalIgnores(['.next', 'out', 'coverage', 'next-env.d.ts']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -16,11 +16,12 @@ export default defineConfig([
       // like un-awaited promises that plain syntax rules can't see.
       tseslint.configs.recommendedTypeChecked,
       reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite(),
+      // Fast Refresh rules, with the exports Next.js expects (metadata, viewport…).
+      reactRefresh.configs.next(),
     ],
     languageOptions: {
       ecmaVersion: 2023,
-      globals: globals.browser,
+      globals: { ...globals.browser, ...globals.node },
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,

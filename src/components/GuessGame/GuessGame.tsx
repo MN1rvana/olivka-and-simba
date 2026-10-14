@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useReducer, useRef } from 'react';
 import { flushSync } from 'react-dom';
 import { motion } from 'motion/react';
@@ -20,18 +22,27 @@ const CAN_PLAY = canPlay(PLAYABLE);
 const nameOf = (id: CatId) => cats.find((cat) => cat.id === id)?.name ?? id;
 
 export function GuessGame() {
-  const [state, dispatch] = useReducer(gameReducer, null, () =>
-    createInitialState(
-      CAN_PLAY ? pickRound(PLAYABLE, null) : null,
-      readBestStreak(getLocalStorage()),
-    ),
-  );
+  const [state, dispatch] = useReducer(gameReducer, null, () => createInitialState(null, 0));
   const firstGuessButton = useRef<HTMLButtonElement>(null);
   const nextButton = useRef<HTMLButtonElement>(null);
 
-  // localStorage is outside React, so keeping it in sync is an effect's job.
+  // The random photo and the saved best only exist in the browser. Picking
+  // them during render would make the static HTML and the first browser
+  // render disagree (a hydration mismatch), so the game starts after mount.
   useEffect(() => {
-    saveBestStreak(getLocalStorage(), state.best);
+    if (!CAN_PLAY) return;
+    dispatch({
+      type: 'start',
+      round: pickRound(PLAYABLE, null),
+      best: readBestStreak(getLocalStorage()),
+    });
+  }, []);
+
+  // localStorage is outside React, so keeping it in sync is an effect's job.
+  // 0 is never written: it's what a missing value reads as anyway, and it
+  // would overwrite the saved best before 'start' has loaded it.
+  useEffect(() => {
+    if (state.best > 0) saveBestStreak(getLocalStorage(), state.best);
   }, [state.best]);
 
   const photo = state.round ? getPhoto(state.round.photoId) : null;

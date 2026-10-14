@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
 import { describe, expect, it } from 'vitest';
-import { App } from './App.tsx';
+import HomePage from './page.tsx';
 
 /** Runs axe on the whole document and returns one readable line per problem. */
 async function axeViolations() {
@@ -21,13 +21,13 @@ async function axeViolations() {
 
 describe('accessibility (axe)', () => {
   it('finds no problems on the page', async () => {
-    render(<App />);
+    render(<HomePage />);
     expect(await axeViolations()).toEqual([]);
   });
 
   it('finds no problems with the lightbox open', async () => {
     const user = userEvent.setup();
-    render(<App />);
+    render(<HomePage />);
 
     await user.click(screen.getAllByRole('button', { name: /lying on/i })[0]!);
     expect(await axeViolations()).toEqual([]);
@@ -35,7 +35,7 @@ describe('accessibility (axe)', () => {
 
   it('finds no problems after a game guess', async () => {
     const user = userEvent.setup();
-    render(<App />);
+    render(<HomePage />);
 
     await user.click(screen.getByRole('button', { name: 'Simba' }));
     expect(await axeViolations()).toEqual([]);
