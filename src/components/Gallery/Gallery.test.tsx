@@ -19,12 +19,15 @@ describe('Gallery filter', () => {
     expect(thumbnails()[0]).toHaveAccessibleName(/simba/i);
   });
 
-  it('starts from the filter in a shared link', () => {
+  it('starts from the filter in a shared link, quietly', () => {
     window.history.replaceState(null, '', '/?cat=olivka');
     render(<Gallery />);
 
     expect(screen.getByRole('radio', { name: /olivka/i })).toBeChecked();
     expect(thumbnails()).toHaveLength(1);
+    expect(screen.getByText('1 photo')).toBeInTheDocument();
+    // Nobody changed anything yet, so there's nothing to announce.
+    expect(screen.getByRole('status')).toBeEmptyDOMElement();
   });
 
   it('moves between filters with arrow keys, like any radio group', async () => {

@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { photos } from '../../data/photos.ts';
-import { countByFilter, filterPhotos } from '../../lib/gallery.ts';
+import { countByFilter, filterPhotos, type PhotoFilter } from '../../lib/gallery.ts';
 import { usePhotoFilter } from '../../hooks/usePhotoFilter.ts';
 import { Lightbox } from '../Lightbox/Lightbox.tsx';
 import { Picture } from '../Picture/Picture.tsx';
@@ -14,9 +14,27 @@ const counts = countByFilter(photos);
 
 const layoutIdFor = (photoId: string) => `photo-${photoId}`;
 
+const describeCount = (count: number) =>
+  count === 0 ? 'No photos here yet.' : `${count} ${count === 1 ? 'photo' : 'photos'}`;
+
+const REFLOW = { type: 'spring', duration: 0.45, bounce: 0.1 } as const;
+const INSTANT = { duration: 0 } as const;
+
 export function Gallery() {
   const [filter, setFilter] = usePhotoFilter();
   const visible = filterPhotos(photos, filter);
+
+  // A shared link (?cat=simba) is applied straight after the static HTML
+  // hydrates. That isn't something the visitor did, so it shouldn't
+  // animate or be announced. Both start only after a real filter change.
+  const [hasChangedFilter, setHasChangedFilter] = useState(false);
+  const [announcement, setAnnouncement] = useState('');
+
+  function changeFilter(next: PhotoFilter) {
+    setFilter(next);
+    setHasChangedFilter(true);
+    setAnnouncement(describeCount(filterPhotos(photos, next).length));
+  }
 
   const [openId, setOpenId] = useState<string | null>(null);
   // The lightbox only flies out of the thumbnail that opened it. After the
@@ -51,14 +69,14 @@ export function Gallery() {
     <section id="photos" className={styles.gallery} aria-labelledby="photos-heading">
       <div className={styles.header}>
         <h2 id="photos-heading">Photos</h2>
-        <PhotoFilterControl value={filter} counts={counts} onChange={setFilter} />
+        <PhotoFilterControl value={filter} counts={counts} onChange={changeFilter} />
       </div>
 
-      {/* A live region: screen readers hear the new count when the filter changes. */}
-      <p className={styles.status} role="status">
-        {visible.length === 0
-          ? 'No photos here yet.'
-          : `${visible.length} ${visible.length === 1 ? 'photo' : 'photos'}`}
+      <p className={styles.status}>{describeCount(visible.length)}</p>
+      {/* A live region that only changes when the visitor picks a filter, so
+          screen readers hear the new count then, and not on page load. */}
+      <p className="visually-hidden" role="status">
+        {announcement}
       </p>
 
       <ul className={styles.grid} role="list">
@@ -79,7 +97,7 @@ export function Gallery() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ type: 'spring', duration: 0.45, bounce: 0.1 }}
+                transition={hasChangedFilter ? REFLOW : INSTANT}
                 className={styles.item}
                 // Grow and basis both proportional to the aspect ratio, so every
                 // photo in a row ends up the same height.
