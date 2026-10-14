@@ -3,8 +3,8 @@
  * decide how it looks.
  *
  * Rule for this file: no invented facts. Anything Maryna hasn't written
- * yet is a visible TODO(Maryna) placeholder, so it can't slip into
- * production unnoticed.
+ * yet stays empty, marked TODO(Maryna). Empty fields aren't shown on the
+ * site, and `next dev` lists them in the terminal (see lib/content.ts).
  */
 
 export type CatId = 'olivka' | 'simba';
@@ -32,12 +32,10 @@ export const cats: readonly Cat[] = [
     birthday: null, // TODO(Maryna): 'YYYY-MM-DD'
     coat: 'Golden British Shorthair',
     portraitId: 'olivka-cat-bed',
-    bio: [
-      'TODO(Maryna): a short bio, 2–3 sentences. How Olivka came home, and what Olivka is like.',
-    ],
-    traits: ['TODO(Maryna): 3–5 traits'],
-    favorites: ['TODO(Maryna): favorite things'],
-    habits: ['TODO(Maryna): habits'],
+    bio: [], // TODO(Maryna): 2–3 sentences. How Olivka came home, and what Olivka is like.
+    traits: [], // TODO(Maryna): 3–5 traits
+    favorites: [], // TODO(Maryna): favorite things
+    habits: [], // TODO(Maryna): habits
   },
   {
     id: 'simba',
@@ -45,9 +43,9 @@ export const cats: readonly Cat[] = [
     birthday: null, // TODO(Maryna): 'YYYY-MM-DD'
     coat: 'Golden British Shorthair',
     portraitId: 'simba-bedspread',
-    bio: ['TODO(Maryna): a short bio, 2–3 sentences. How Simba came home, and what Simba is like.'],
-    traits: ['TODO(Maryna): 3–5 traits'],
-    favorites: ['TODO(Maryna): favorite things'],
-    habits: ['TODO(Maryna): habits'],
+    bio: [], // TODO(Maryna): 2–3 sentences. How Simba came home, and what Simba is like.
+    traits: [], // TODO(Maryna): 3–5 traits
+    favorites: [], // TODO(Maryna): favorite things
+    habits: [], // TODO(Maryna): habits
   },
 ];

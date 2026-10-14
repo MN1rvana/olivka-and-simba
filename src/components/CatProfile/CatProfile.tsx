@@ -1,5 +1,6 @@
 import type { Cat } from '../../data/cats.ts';
 import { getPhoto } from '../../data/photos.ts';
+import { missingContent } from '../../lib/content.ts';
 import { formatBirthday, joinAsSentenceList } from '../../lib/format.ts';
 import { CatAge } from '../CatAge/CatAge.tsx';
 import { Picture } from '../Picture/Picture.tsx';
@@ -25,6 +26,12 @@ interface CatProfileProps {
 export function CatProfile({ cat, priority = false }: CatProfileProps) {
   const headingId = `${cat.id}-heading`;
   const portrait = getPhoto(cat.portraitId);
+
+  // A server component, so in `next dev` this prints in the terminal, not the browser.
+  const missing = missingContent(cat);
+  if (process.env.NODE_ENV === 'development' && missing.length > 0) {
+    console.warn(`TODO(Maryna): ${cat.name} has no ${missing.join(', ')} yet in src/data/cats.ts`);
+  }
 
   return (
     <section id={cat.id} className={styles.profile} data-cat={cat.id} aria-labelledby={headingId}>
@@ -54,28 +61,37 @@ export function CatProfile({ cat, priority = false }: CatProfileProps) {
             <p key={paragraph}>{paragraph}</p>
           ))}
 
-          <p>
-            {cat.name} is {joinAsSentenceList(cat.traits)}.
-          </p>
+          {/* Every part below is left out until it has content: no placeholders on the live site. */}
+          {cat.traits.length > 0 && (
+            <p>
+              {cat.name} is {joinAsSentenceList(cat.traits)}.
+            </p>
+          )}
 
-          <div className={styles.lists}>
-            <div>
-              <h3>Favorite things</h3>
-              <ul>
-                {cat.favorites.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
+          {(cat.favorites.length > 0 || cat.habits.length > 0) && (
+            <div className={styles.lists}>
+              {cat.favorites.length > 0 && (
+                <div>
+                  <h3>Favorite things</h3>
+                  <ul>
+                    {cat.favorites.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {cat.habits.length > 0 && (
+                <div>
+                  <h3>Habits</h3>
+                  <ul>
+                    {cat.habits.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
-            <div>
-              <h3>Habits</h3>
-              <ul>
-                {cat.habits.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
