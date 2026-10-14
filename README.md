@@ -54,7 +54,7 @@ There are 58 tests and no snapshots. The rules live in pure functions: the filte
 
 The most useful bug I found wasn't from a tool. motion's press animation was quietly making each filter label an extra Tab stop. axe was happy with it. I wrote a test that failed, then fixed it.
 
-Lighthouse on a mobile profile, production build: Performance 96, Accessibility 100, Best Practices 100, SEO 100, with layout shift at 0.
+Lighthouse on a mobile profile, on the live site: Performance 99–100, Accessibility 100, Best Practices 100, SEO 100, with layout shift at 0.
 
 ## What I'd do next
 
