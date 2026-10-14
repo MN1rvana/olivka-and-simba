@@ -117,7 +117,7 @@ export function Gallery() {
                 >
                   <Picture
                     photo={photo}
-                    sizes="(min-width: 60rem) 33vw, (min-width: 30rem) 50vw, 100vw"
+                    sizes="(min-width: 60rem) 25vw, 50vw"
                     layoutId={layoutIdFor(photo.id)}
                   />
                 </motion.button>

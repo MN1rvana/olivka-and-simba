@@ -21,31 +21,32 @@
 }
 
 /*
- * Phones: one column, each photo full width at its own aspect ratio.
- * Wider screens: justified rows (each row the same height, photos
- * never cropped), with reading order still left to right.
+ * Justified rows: every photo in a row is the same height, none is
+ * cropped, and reading order stays left to right. Rows are shorter on
+ * phones, so about two portrait photos share a row instead of one photo
+ * per screen.
  */
 .grid {
+  --row-height: 10rem;
+
   /* popLayout takes leaving photos out of the flow with position: absolute, relative to this. */
   position: relative;
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-3xs);
   padding: 0;
   list-style: none;
 }
 
+/* Soaks up the space left in the last row, so its photos don't stretch. */
+.grid::after {
+  content: '';
+  flex-grow: 1000;
+}
+
 @media (min-width: 30rem) {
   .grid {
     --row-height: 14rem;
-
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  /* Soaks up the space left in the last row, so its photos don't stretch. */
-  .grid::after {
-    content: '';
-    flex-grow: 1000;
   }
 }
 
