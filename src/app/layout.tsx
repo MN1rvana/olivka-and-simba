@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import '../styles/tokens.css';
 import '../styles/reset.css';
 import '../styles/base.css';
+import '../styles/not-found.css';
 
 /*
  * The font files come from Fontsource, so they're in the repo and the build

@@ -1,21 +1,29 @@
-.notFound {
+/*
+ * The 404 page. Global rather than a CSS module on purpose: Next.js preloads
+ * the root not-found page's CSS on every page, so a module meant an extra,
+ * unused request (and a console warning) on the home page. As part of the
+ * global stylesheet it's a few hundred bytes with no request of its own.
+ */
+
+/* The whole page goes dark, so overscrolling doesn't reveal the light background. */
+:root:has(.not-found) {
   --color-bg: var(--color-stripe);
   --color-text: var(--color-golden);
   --color-link: var(--color-chin);
   --color-focus: var(--color-eye-olivka);
+}
 
+.not-found {
   display: grid;
   align-content: center;
   justify-items: center;
   gap: var(--space-s);
   min-height: 100dvh;
   padding: var(--space-xl) var(--gutter);
-  background-color: var(--color-bg);
-  color: var(--color-text);
   text-align: center;
 }
 
-.eyes {
+.not-found-eyes {
   width: min(60vw, 16rem);
   margin-bottom: var(--space-m);
   fill: none;
@@ -24,6 +32,6 @@
   stroke-linecap: round;
 }
 
-.notFound p {
+.not-found p {
   color: var(--color-chin);
 }
