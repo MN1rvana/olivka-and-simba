@@ -4,6 +4,8 @@ import { renderToString } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { Gallery } from '../components/Gallery/Gallery.tsx';
 import { GuessGame } from '../components/GuessGame/GuessGame.tsx';
+import { photos } from '../data/photos.ts';
+import { filterPhotos } from '../lib/gallery.ts';
 import HomePage from './page.tsx';
 
 /**
@@ -32,11 +34,11 @@ describe('static HTML and hydration', () => {
     window.history.replaceState(null, '', '/?cat=simba');
 
     const html = renderToString(<Gallery />);
-    expect(html.match(/<li/g)).toHaveLength(2);
+    expect(html.match(/<li/g)).toHaveLength(photos.length);
 
     const { container, problems } = await buildThenHydrate(<Gallery />);
     expect(problems).toEqual([]);
-    expect(container.querySelectorAll('li')).toHaveLength(1);
+    expect(container.querySelectorAll('li')).toHaveLength(filterPhotos(photos, 'simba').length);
   });
 
   it('builds the game without a photo, then starts it in the browser without a mismatch', async () => {

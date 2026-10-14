@@ -1,5 +1,41 @@
 [
   {
+    "id": "olivka-bathtub",
+    "cat": "olivka",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Olivka lying on the edge of the bathtub with paws tucked in, looking straight at the camera.",
+    "placeholder": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAACwAwCdASoQABUAPu1iqU2ppaOiMAgBMB2JZQAAPRBr5Mt0SIjDDAD+aghGc7JE5VcSp1U8TrsxpOfl5KMjdLbJWTTkon25+vdrF9KOti1NGCnkecqolsjNqRJRbMOcWtuVVS7DcK2tD9E6963+z5E8RRr+gAAA"
+  },
+  {
+    "id": "olivka-black-chair",
+    "cat": "olivka",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Olivka stretched out on a black chair, one front paw hanging over the edge.",
+    "placeholder": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAAAwBACdASoQABUAPu1iqU2ppaQiMAgBMB2JYgCo9B89EYuLKJMga1+J6QAA/i3gxgBAtiJ5FsIlsjHdBsIfUPZfOXWBtd9ziuKynp2HJaN7cNR1PDKzxKICpIkkPVC3T/4KbqOGouw88Iunatz4aEudjpv7Pcw/+/zwcbkp35iuwVwLZeu1CGJ17/eOoxzS8abwtzpXzvLBYgAA"
+  },
+  {
+    "id": "olivka-black-mat",
+    "cat": "olivka",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Olivka lying on a black mat and looking back at the camera, with cat toys in the background.",
+    "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAABQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBOmUGbaBQXLL7jvpcRYRIrAAP7gq4U3eF5zU3p2QWKNV4YCyXSnmfnfqMyaojQ54VCIKdrzgybwdQivKikRJ57tJs9SH435EDfgdu8RIiwwMzinw5pi3+UJ+gvL585Tux9CHFqS/3mrJVpEhj0P4rYkBYAA"
+  },
+  {
     "id": "olivka-cat-bed",
     "cat": "olivka",
     "width": 640,
@@ -12,6 +48,66 @@
     "placeholder": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAwAgCdASoQABAAA4BaJYgCdAC69ZZCWf5WgAD3hoEvGa6n32BMyaq4SWX0lVtgI7nVscXEgNtAbOaYqVnsXWs6aVzw+5ed15N034bk+WBvVxY+XW6zplO4OcnWLJZNpUzlMOff+uhAAA=="
   },
   {
+    "id": "olivka-from-above",
+    "cat": "olivka",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Olivka seen from above, sitting on a wooden floor and looking up with wide green eyes.",
+    "placeholder": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAAAwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JYgCdABcVfF9/6qBhIz6R8UAA/YfL/VLN4DH49WpSbn1n2GLWMa4jONCI92K/uwvggmd0xg8IpT2W/gWcL/aa9HIN/49rEJHwV3D9cmr732K9RJzY6HZXZMb+dV8BfnAcovduiqbOVdQA"
+  },
+  {
+    "id": "olivka-office-chair",
+    "cat": "olivka",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Olivka lying on a black office chair, one paw over the edge of the seat, framed by the armrest.",
+    "placeholder": "data:image/webp;base64,UklGRsoAAABXRUJQVlA4IL4AAABwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JagCdMoMxg0jZkRFLE/DzlGb+FAD9PKmp1ETfyCsLlYpE5DWjO51gmT04LpzU16yVZHC2UpIHYPa3IVcNngT9k4y3rKZUG01hkysg0JZB2qBrv171YtvIMM7HbWpTsOG+ck+WiDO97hexTZHJmcBhXjE5/hyf+Bn4C79pX9ytx8qMpvGxbVg7VlMOh98m9+jdke+mhqlR1v8iG+9dQL2E5oI3gAAA"
+  },
+  {
+    "id": "olivka-radiator",
+    "cat": "olivka",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Olivka curled up in a cardboard scratcher under a white radiator, looking up with wide green eyes.",
+    "placeholder": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAADQAwCdASoQABUAPu1iqk4ppaQiMAgBMB2JQBdgBDrYwUXIoGLwKeAA/ucRze9rUz/+5fDsw8rTFmKwT7xKn5+uxygjY1NEe0GxP3lq+YCrDTOa0CGS3Jkgq6w0nN5E0oxmv+8sXxElqODAAAA="
+  },
+  {
+    "id": "olivka-side-glance",
+    "cat": "olivka",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Olivka lying on a grey bedspread, looking off to the side.",
+    "placeholder": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAAAQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBOgA+Yoh6aNwECltDJ9AAD7qpFvk0VFji7XrtDupifvWOWjTX5qtyVQuAE0xGGQCbttO0YzEQWW3OilXmJSKMloGS+6NgBuuXLoMcOTei4WJjFPSAaJkBsm1ma5Jkcdl/WNoqeENfq+2eAAAA=="
+  },
+  {
+    "id": "olivka-sofa-squint",
+    "cat": "olivka",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Olivka on the back of a black sofa with eyes half closed and one paw stretched forward.",
+    "placeholder": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JZQDG9CIGviPczAsH+vcYXAAA/t6AeF1YfmeINhgflebHmwPcXydt+pWLGfRyfstU9a49Y3GEt/YoUhBA92n7SoMhjNWpOWpcPR+AAAA="
+  },
+  {
     "id": "simba-bedspread",
     "cat": "simba",
     "width": 640,
@@ -22,5 +118,89 @@
     ],
     "alt": "Simba lying on a quilted white bedspread, looking up at the camera with wide green eyes.",
     "placeholder": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAAAwBACdASoQABQAPu1iqU2ppaOiMAgBMB2JYwC7AB4g4nkwl3vSPdO2/oAA/mWXZO8NrK1tdRIOdT/wy+fW+H/aMR3oOUvP+ELqZbhfofWNgCNo82zPeXfsmWBnxldmPpHkCyz62tIjHRqGrenk1SsQtw4q/bl9BZDFBzo1xmPQAA=="
+  },
+  {
+    "id": "simba-cat-bed",
+    "cat": "simba",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Close-up of Simba lying in a white cat bed, looking at the camera with round eyes.",
+    "placeholder": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAAAQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbAC06CHeptfqQgiqamgg7AD+9CsD+2l/UYoziigBQAYnYN/vcc9p6dVRvi2I7VaGIVdj+hr5qwz5keN+BY6ycempWU+s47ZFmdc/m8qWUrPBVrd4ssPvbF7GB4JBQxqstl3D6cz+31Fs1JoAAA=="
+  },
+  {
+    "id": "simba-dining-chair",
+    "cat": "simba",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Simba lounging on a black dining chair with the back legs stretched out.",
+    "placeholder": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAAAwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBdgO4AYgfspFacOQpko8aAA/u9cc8xKmRLupp5D+U6jjS7uDKITJsh6ViEOOB/5iJGScUwAwoTWfGlGaKIWx6TkrNmSXoNenvqNvjUxCPxOOY5DnglCw5djoJoXyD2HeZQAAAA="
+  },
+  {
+    "id": "simba-doll-bed",
+    "cat": "simba",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Simba sitting in a small wooden doll’s bed with a checked blanket, looking up over one shoulder.",
+    "placeholder": "data:image/webp;base64,UklGRr4AAABXRUJQVlA4ILIAAABQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBad7wDZmFb/Bndnjc/pGxGAAP7SminlwpjH44f6NmcZUDJx2w7KiT27fGsgsqDkxsZ+UB0C+W83rZy0QTpuKpObNS1yFygW4Bawws15b1o03CFKOpSOIFZN2z+teZLkxZk4MXssadya+mkPQmkyh256RJz/SDtfS8sXxC2Vf7T23Znag0LHzL+dgKtZYApKzyABtBRrlfAA"
+  },
+  {
+    "id": "simba-laptop",
+    "cat": "simba",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Simba lying in front of an open laptop and looking back at the camera.",
+    "placeholder": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAABQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBOkH+BevnZEx87B+Ipn+I8AAP6JPJTDISkTSatkqFkVR46StV+1LaE7Mm8WmDF+lWHEqTR66/65YfehiqxrGgHgnLeXZek3UiY0RxHtB0MTQn0xf3IM9brGQ9sdNZ2SJK5O/6fh31qEtHup81L0SjwYD/rMjPFbpAAA"
+  },
+  {
+    "id": "simba-sitting-up",
+    "cat": "simba",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Simba sitting up on a bed in a room with lilac walls, looking at the camera.",
+    "placeholder": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwAwCdASoQABUAPu1iqU2ppaOiMAgBMB2JZQCdABS/cudZeQe5aAD+aKtAjQGmkDpiZnDvI0Cu99IeEWlfcjuWWlDx46kPD1z068PtfVgtEgHV1XayJrCki+sTRZw5BEj/l+h88tQh0KLEOU1UJUBpF/gzcsVRoU+K5r1IejGAAA=="
+  },
+  {
+    "id": "simba-sofa-loaf",
+    "cat": "simba",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Simba lying on the arm of a black sofa with both front paws tucked together.",
+    "placeholder": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAADwAwCdASoQABUAPu1iqU2ppaOiMAgBMB2JQBadApW98KYsq0X/w/8AAMdKXB2AKMFFvoJaG+6E45Jw8A2+6dOiWknEJ35NpHbZBQ6bMD6MiI9GX54cTinjSpyBYeG7ZNeanphHVnQwHAAA"
+  },
+  {
+    "id": "simba-teal-bedspread",
+    "cat": "simba",
+    "width": 960,
+    "height": 1280,
+    "widths": [
+      480,
+      960
+    ],
+    "alt": "Simba lying on a teal quilted bedspread, front paws crossed, looking at the camera with green eyes.",
+    "placeholder": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAAAwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JYwCdMoACPy+htOA0jN2xJKAA/p/rpezcESfpS6Of8QXan8EmpBV5PRuLVdVW55LEB3XyP8QrSwHuKZNcf2goJwUcL9MvtSbpgnUmzKt182QiQtHmTUDyAPJuAAAA"
   }
 ]

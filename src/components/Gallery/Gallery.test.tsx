@@ -1,7 +1,14 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
+import { photos } from '../../data/photos.ts';
+import { filterPhotos } from '../../lib/gallery.ts';
 import { Gallery } from './Gallery.tsx';
+
+// Expected numbers come from the manifest, so adding photos never breaks these tests.
+const total = photos.length;
+const countOf = (cat: 'olivka' | 'simba') => filterPhotos(photos, cat).length;
+const photosText = (count: number) => `${count} ${count === 1 ? 'photo' : 'photos'}`;
 
 const thumbnails = () => within(screen.getByRole('list')).getAllByRole('button');
 
@@ -9,14 +16,16 @@ describe('Gallery filter', () => {
   it('shows only the chosen cat and puts the filter in the URL', async () => {
     const user = userEvent.setup();
     render(<Gallery />);
-    expect(thumbnails()).toHaveLength(2);
+    expect(thumbnails()).toHaveLength(total);
 
     await user.click(screen.getByRole('radio', { name: /simba/i }));
 
     expect(window.location.search).toBe('?cat=simba');
-    expect(screen.getByRole('status')).toHaveTextContent('1 photo');
-    expect(thumbnails()).toHaveLength(1);
-    expect(thumbnails()[0]).toHaveAccessibleName(/simba/i);
+    expect(screen.getByRole('status')).toHaveTextContent(photosText(countOf('simba')));
+    expect(thumbnails()).toHaveLength(countOf('simba'));
+    for (const thumbnail of thumbnails()) {
+      expect(thumbnail).toHaveAccessibleName(/simba/i);
+    }
   });
 
   it('starts from the filter in a shared link, quietly', () => {
@@ -24,8 +33,8 @@ describe('Gallery filter', () => {
     render(<Gallery />);
 
     expect(screen.getByRole('radio', { name: /olivka/i })).toBeChecked();
-    expect(thumbnails()).toHaveLength(1);
-    expect(screen.getByText('1 photo')).toBeInTheDocument();
+    expect(thumbnails()).toHaveLength(countOf('olivka'));
+    expect(screen.getByText(photosText(countOf('olivka')))).toBeInTheDocument();
     // Nobody changed anything yet, so there's nothing to announce.
     expect(screen.getByRole('status')).toBeEmptyDOMElement();
   });
@@ -74,17 +83,18 @@ describe('Lightbox keyboard navigation', () => {
     const dialog = screen.getByRole('dialog', { name: 'Photo viewer' });
     expect(dialog).toHaveAttribute('open');
     expect(within(dialog).getByRole('button', { name: 'Close' })).toHaveFocus();
-    expect(within(dialog).getByText('1 of 2')).toBeInTheDocument();
+    expect(within(dialog).getByText(`1 of ${total}`)).toBeInTheDocument();
 
     await user.keyboard('{ArrowRight}');
-    expect(within(dialog).getByText('2 of 2')).toBeInTheDocument();
-    expect(within(dialog).getByText(/^Photo 2 of 2: /)).toBeInTheDocument();
-
-    await user.keyboard('{ArrowRight}');
-    expect(within(dialog).getByText('1 of 2')).toBeInTheDocument();
+    expect(within(dialog).getByText(`2 of ${total}`)).toBeInTheDocument();
+    expect(within(dialog).getByText(new RegExp(`^Photo 2 of ${total}: `))).toBeInTheDocument();
 
     await user.keyboard('{ArrowLeft}');
-    expect(within(dialog).getByText('2 of 2')).toBeInTheDocument();
+    expect(within(dialog).getByText(`1 of ${total}`)).toBeInTheDocument();
+
+    // From the first photo, ← wraps round to the last.
+    await user.keyboard('{ArrowLeft}');
+    expect(within(dialog).getByText(`${total} of ${total}`)).toBeInTheDocument();
 
     await user.keyboard('{Escape}');
     expect(dialog).not.toHaveAttribute('open');
@@ -96,12 +106,18 @@ describe('Lightbox keyboard navigation', () => {
     const user = userEvent.setup();
     window.history.replaceState(null, '', '/?cat=simba');
     render(<Gallery />);
+    const simbaCount = countOf('simba');
 
     await user.click(thumbnails()[0]!);
     const dialog = screen.getByRole('dialog', { name: 'Photo viewer' });
+    expect(within(dialog).getByText(`1 of ${simbaCount}`)).toBeInTheDocument();
 
-    expect(within(dialog).getByText('1 of 1')).toBeInTheDocument();
-    expect(within(dialog).queryByRole('button', { name: 'Next' })).not.toBeInTheDocument();
+    // Step through every photo: each one is Simba's.
+    for (let shown = 1; shown <= simbaCount; shown += 1) {
+      expect(within(dialog).getByRole('img')).toHaveAccessibleName(/simba/i);
+      await user.keyboard('{ArrowRight}');
+    }
+    expect(within(dialog).getByText(`1 of ${simbaCount}`)).toBeInTheDocument();
   });
 
   it('closes with the Close button', async () => {
